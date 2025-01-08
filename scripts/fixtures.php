@@ -8,12 +8,12 @@
 
     $faker = Faker\Factory::create('fr_FR');
 
-    for($i = 0; $i<=100; $i++){
+    for($i = 0; $i<50; $i++){
         $prep = $pdo->prepare('INSERT INTO article (title, category, description, image_name, price, stock, enabled) 
                             VALUES (:title, :category, :description, :image_name, :price, :stock, :enabled)');
 
         $prep->bindValue(':title', $faker->word());
-        $prep->bindValue(':category', $faker->numberBetween(1, 5));
+        $prep->bindValue(':category', $faker->numberBetween(1, 4));
         $prep->bindValue(':description', $faker->sentences(5,true));
         $prep->bindValue(':image_name', $faker->word());
         $prep->bindValue(':price', $faker->numberBetween(25, 500));
