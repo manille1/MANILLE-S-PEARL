@@ -15,7 +15,7 @@ a{
     max-height: 450px;
     background-color: #f6f6f6;
     border-radius: 13px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 img{
@@ -27,8 +27,30 @@ img{
     object-fit: cover;
 }
 
+.small{
+    margin: 0;
+    font-size: 15px;
+    color: #2e2e2e;
+    font-style: italic;
+}
+
+h2{
+    text-transform: uppercase;
+}
+
 .text{
     padding: 13px;
     text-align: start;
     color: black;
+}
+
+p{
+    margin: 5px 0;
+}
+
+.info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
