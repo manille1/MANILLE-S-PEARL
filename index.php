@@ -9,9 +9,31 @@
         header("Location: index.php");
         exit();
     }
+
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+        
+            $componentName = !empty($_GET['component'])
+                ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
+                : 'articles';
+
+            $actionName = !empty($_GET['action'])
+                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+                : null;
+
+            if (file_exists("Controller/$componentName.php")) {
+                require "Controller/$componentName.php";
+            } else {
+                throw new Exception("Component '$componentName' does not exist");
+            }
+      
+        exit();
+    }
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,11 +60,16 @@
             
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
-            : 'home';
+            : 'articles';
+
+            $actionName = !empty($_GET['action'])
+                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+                : null;
 
             if(file_exists("controller/$componentName.php")){
                 require "Controller/$componentName.php";
             } else {
+                require "Controller/articles.php";
                 throw new Exception("Component '$componentName' does not exist");
             }
         ?>
