@@ -1,0 +1,71 @@
+#intro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 90%, rgb(255, 255, 255) 100%), 
+        url(../../IMG/star_sky.jpg) no-repeat center center;
+    background-size: cover;
+    /* background-attachment: fixed; */
+    width: 100%;
+    height: 700px;
+    color: aliceblue;
+}
+
+#intro h1{
+    font-size: 7em;
+    font-weight: 700;
+    font-style: uppercase;
+}
+
+#intro p{
+    font-size: 2.75em;
+}
+
+.small{
+    margin: 0;
+    font-size: 10px;
+    color: aliceblue;
+    font-style: italic;
+}
+
+#article_phare{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    margin: 5em 1.5em;
+}
+
+#article_phare h2{
+    width: 100%;
+    text-align: center;
+}
+
+.card_phare{
+    margin: 30px;
+    padding: 15px;
+    max-width: 335px;
+    max-height: 200px;
+    background-color: #f6f6f6;
+    border-radius: 13px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#citation{
+    margin: 5em 0;
+}
+
+#citation p{
+    text-align: center;
+    color: #c3c3c3;
+    font-size: 2.2em;
+    font-style: italic;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#citation p:hover{
+    color: #919191;
+    transform: scale(1.1);
+}

@@ -6,8 +6,8 @@
         <div class="card">
             <img src="./IMG/<?php echo $bracelet['image_name']; ?>.jpg" alt="<?php echo $bracelet['image_name']; ?>">
             <div class="text">
-                <p class="small"><?php echo 'Bracelet';?></p>
-                <a href="#"><h2><?php echo $bracelet['name'] ;?></h2></a>
+                <p class="small"><Bracelet</p>
+                <a href="#"><h2><?php echo mb_substr($bracelet['name'],0,11) ;?> ...</h2></a>
                 <p class="description"><?php echo mb_substr($bracelet['description'], 0, 50)?> ...</p>
                 <div class="info">
                     <p><?php echo $bracelet['price'] ?> €</p>
