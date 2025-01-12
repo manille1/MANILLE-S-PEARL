@@ -6,7 +6,7 @@
         <div class="card">
             <img src="./IMG/<?php echo $earring['image_name']; ?>.jpg" alt="<?php echo $earring['image_name']; ?>">
             <div class="text">
-                <p class="small"><?php echo 'Boucles d\'oreilles';?></p>
+                <p class="small">Boucles d\'oreilles</p>
                 <a href="#"><h2><?php echo $earring['name'] ;?></h2></a>
                 <p class="description"><?php echo mb_substr($earring['description'], 0, 50)?> ...</p>
                 <div class="info">

@@ -18,7 +18,7 @@
         
             $componentName = !empty($_GET['component'])
                 ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
-                : 'articles';
+                : 'home';
 
             $actionName = !empty($_GET['action'])
                 ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
@@ -60,7 +60,7 @@
             
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
-            : 'articles';
+            : 'home';
 
             $actionName = !empty($_GET['action'])
                 ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')

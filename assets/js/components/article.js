@@ -8,38 +8,18 @@ export const refreshList = async (page) => {
 
     for(let i = 0; i < data.results.length; i++){
 
-        let categoryType = ''
-        switch (data.results[i].category){
-            case '1':
-                categoryType = 'Collier'
-                break
-        
-            case '2':
-                categoryType = 'Bracelets'
-                break
-        
-            case '3':
-                categoryType = 'Bague'
-                break
-    
-            case '4':
-                categoryType = 'Boucles d\'oreilles'
-                break
-
-            default:
-                categoryType = 'blague'
-        }
+        const categoryName = getCategoryName(data.results[i].category)
 
         listContent.push(`<div class="card">
                             <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                             <div class="text">
-                                <p class="small">${categoryType}</p>
+                                <p class="small">${categoryName}</p>
                                 <a href="#"><h2>${data.results[i].name}</h2></a>
                                 <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
                                 <div class="info">
                                     <p>${data.results[i].price} €</p>
                                     <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                    <a class="add_button" href="#"><i class="fa-solid fa-circle-plus"></i></a>
+                                    <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
                                 </div>
                             </div>
                         </div>`)
@@ -51,6 +31,33 @@ export const refreshList = async (page) => {
 
     handlePagination(page)
 
+}
+
+const getCategoryName = (article_category) => {
+    let categoryType = ''
+    switch (String(article_category)){
+        case '1':
+            categoryType = 'Collier'  
+            break
+    
+        case '2':
+            categoryType = 'Bracelets'  
+            break
+    
+        case '3':
+            categoryType = 'Bague'   
+            break
+    
+        case '4':
+            categoryType = 'Boucles d\'oreilles'
+            break
+
+        default:
+            categoryType = 'blague'
+            break
+    }
+
+    return categoryType
 }
 
 const getPagination = (total) => {
