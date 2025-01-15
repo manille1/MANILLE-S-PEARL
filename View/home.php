@@ -27,6 +27,10 @@
 </div>
 
 <div id="citation">
-    <p><i class="fa-solid fa-quote-left"></i> MANILLE'S PEARL est une entreprise qui mets</br>en avants le savoir-faire de joaillerie.
-    </br>Nous proposons des bijoux d'éxception</br>et de qualités. <i class="fa-solid fa-quote-right"></i></p>
+    <p><i class="fa-solid fa-quote-left"></i> MANILLE'S PEARL est une entreprise qui met
+        </br>en avant le savoir-faire de joaillerie.
+        </br>Nous proposons des bijoux d'éxception
+        </br>et de qualité. 
+        <i class="fa-solid fa-quote-right"></i>
+    </p>
 </div>
