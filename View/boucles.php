@@ -1,7 +1,7 @@
 <div id="fond_boucles">
-    <div id="title">Toutes nos boucles d'oreilles</div>
+    <div class="title">Toutes nos boucles d'oreilles</div>
 </div>
-<section id="earring-articles">
+<section id="earring-articles" class="articles">
     
 </section>
 

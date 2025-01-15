@@ -1,7 +1,12 @@
-#articles{
+.articles{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.title{
+    font-size: 135px;
+    color: whitesmoke;
 }
 
 a{

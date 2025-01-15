@@ -1,19 +1,16 @@
-import { getArticles } from "../services/article.js";
+import { getNecklaceArticles } from "../services/collier.js";
 
-export const refreshList = async (page) => {
-    const sectionArcticles = document.querySelector('#articles')
-    const data = await getArticles(page)
-
-    let listContent = []
+export const refreshNecklaceCard = async (page) => {
+    const sectionNecklaceArticles = document.querySelector('#necklace-articles')
+    const data = await getNecklaceArticles(page)
+    
+    let cardContent = []
 
     for(let i = 0; i < data.results.length; i++){
-
-        const categoryName = getCategoryName(data.results[i].category)
-
-        listContent.push(`<div class="card">
+        cardContent.push(`<div class="card">
                             <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                             <div class="text">
-                                <p class="small">${categoryName}</p>
+                                <p class="small">Collier</p>
                                 <a href="#"><h2>${data.results[i].name}</h2></a>
                                 <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
                                 <div class="info">
@@ -25,51 +22,24 @@ export const refreshList = async (page) => {
                         </div>`)
     }
 
-    sectionArcticles.innerHTML = listContent.join('')
-
-    document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-
-    handlePagination(page)
-
-}
-
-const getCategoryName = (article_category) => {
-    let categoryType = ''
-    switch (String(article_category)){
-        case '1':
-            categoryType = 'Collier'  
-            break
+    sectionNecklaceArticles.innerHTML = cardContent.join('');
     
-        case '2':
-            categoryType = 'Bracelets'  
-            break
-    
-        case '3':
-            categoryType = 'Bague'   
-            break
-    
-        case '4':
-            categoryType = 'Boucles d\'oreilles'
-            break
-
-        default:
-            categoryType = 'blague'
-            break
+    if(data.count > 15){
+        document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
+        handlePagination(page)
     }
-
-    return categoryType
 }
 
 const getPagination = (total) => {
     const countPages =  Math.ceil(total / 15)
     let paginationButton = []
-    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="previous-link">Précédent</a></li>`)
+    paginationButton.push(` <li class="page-item"><a class="page-link" href="#" id="previous-link">Précédent</a></li>`)
 
     for (let i = 1; i <= countPages; i++){
-        paginationButton.push(`<li class="page-item"><a data-page="${i}" class="page-link pagination-btn text-dark-emphasis" href="#">${i}</a></li>`)
+        paginationButton.push(`<li class="page-item"><a data-page="${i}" class="page-link pagination-btn" href="#">${i}</a></li>`)
     }
 
-    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="next-link">Suivant</a></li>`)
+    paginationButton.push(` <li class="page-item"><a class="page-link" href="#" id="next-link">Suivant</a></li>`)
 
     return paginationButton.join('')
 }

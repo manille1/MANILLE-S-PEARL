@@ -1,5 +1,5 @@
-#fond_boucles{
-    background: url(../../IMG/boucles_soleil.jpg) no-repeat;
+.fond_collier{
+    background: url(../../IMG/fond_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;

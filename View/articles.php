@@ -1,4 +1,4 @@
-<section id="articles">
+<section id="articles" class="articles">
     
 </section>
 

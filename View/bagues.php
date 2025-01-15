@@ -1,7 +1,7 @@
 <div id="fond_bagues">
-    <div id="title">Toutes nos bagues</div>
+    <div class="title">Toutes nos bagues</div>
 </div>
-<section id="ring-articles">
+<section id="ring-articles" class="articles">
     
 </section>
 

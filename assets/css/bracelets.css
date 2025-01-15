@@ -8,14 +8,3 @@
     height: auto;
     width: 100%;
 }
-
-#title{
-    font-size: 135px;
-    color: whitesmoke;
-}
-
-#bracelet-articles{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}

@@ -55,6 +55,7 @@
         <link rel="stylesheet" type="text/css" href="./assets/css/bagues.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/boucles.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/bracelets.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/colliers.css">
     </head>
     
     <body>
