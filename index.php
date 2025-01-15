@@ -52,6 +52,7 @@
         </style>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/bagues.css">
     </head>
     
     <body>

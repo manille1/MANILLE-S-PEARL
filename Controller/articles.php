@@ -9,7 +9,6 @@
             
         // var_dump('ça passe dans le premier if de controller');
 
-
         header('Content-Type: application/json');
 
         try {

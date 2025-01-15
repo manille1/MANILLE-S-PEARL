@@ -1,23 +1,15 @@
 <div class="fond_bijoux">
     <div id="title">Toutes nos bagues</div>
 </div>
-<section id="articles">
-    <?php foreach($rings as $ring): ?>
-        <div class="card">
-            <img src="./IMG/<?php echo $ring['image_name']; ?>.jpg" alt="<?php echo $ring['image_name']; ?>">
-            <div class="text">
-                <p class="small">Bague</p>
-                <a href="#"><h2><?php echo $ring['name'] ;?></h2></a>
-                <p class="description"><?php echo mb_substr($ring['description'], 0, 50)?> ...</p>
-                <div class="info">
-                    <p><?php echo $ring['price'] ?> €</p>
-                    <p><?php echo $ring['stock'] ?> en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                    <a class="add_button" href="#"><i class="fa-solid fa-circle-plus"></i></a>
-                </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
+<section id="ring-articles">
+    
 </section>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    
+  </ul>
+</nav>
 
 <style>
     .fond_bijoux{
@@ -37,14 +29,14 @@
     }
 </style>
 
-<script src="./assets/js/services/article.js" type="module"></script>
-<script src="./assets/js/components/article.js" type="module"></script>
+<script src="./assets/js/services/bague.js" type="module"></script>
+<script src="./assets/js/components/bague.js" type="module"></script>
 <script type ="module">
-    import { refreshList } from "./assets/js/components/article.js";
+    import { refreshRingCard } from "./assets/js/components/bague.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
         let currentPage = 1
 
-        refreshList(currentPage)
+        refreshRingCard(currentPage)
     })
 </script>
