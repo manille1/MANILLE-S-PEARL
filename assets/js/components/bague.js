@@ -7,8 +7,6 @@ export const refreshRingCard = async (page) => {
     let cardContent = []
 
     for(let i = 0; i < data.results.length; i++){
-        console.log(data.results[i]);
-        
         cardContent.push(`<div class="card">
                             <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                             <div class="text">
