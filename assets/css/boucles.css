@@ -1,5 +1,5 @@
-#fond_bagues{
-    background: url(../../IMG/bague_perles.jpg) no-repeat;
+#fond_boucles{
+    background: url(../../IMG/boucles_soleil.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;
@@ -14,7 +14,7 @@
     color: whitesmoke;
 }
 
-#ring-articles{
+#earring-articles{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

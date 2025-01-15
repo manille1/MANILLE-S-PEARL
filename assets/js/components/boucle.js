@@ -1,8 +1,8 @@
-import { getRingArticles } from "../services/bague.js";
+import { getEarringsArticles } from "../services/boucle.js";
 
-export const refreshRingCard = async (page) => {
-    const sectionRingArticles = document.querySelector('#ring-articles')
-    const data = await getRingArticles(page)
+export const refreshEarringCard = async (page) => {
+    const sectionEarringArticles = document.querySelector('#earring-articles')
+    const data = await getEarringsArticles(page)
     
     let cardContent = []
 
@@ -10,7 +10,7 @@ export const refreshRingCard = async (page) => {
         cardContent.push(`<div class="card">
                             <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                             <div class="text">
-                                <p class="small">Bague</p>
+                                <p class="small">Boucles d'oreille</p>
                                 <a href="#"><h2>${data.results[i].name}</h2></a>
                                 <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
                                 <div class="info">
@@ -22,7 +22,7 @@ export const refreshRingCard = async (page) => {
                         </div>`)
     }
 
-    sectionRingArticles.innerHTML = cardContent.join('');
+    sectionEarringArticles.innerHTML = cardContent.join('');
     
     if(data.count > 15){
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)

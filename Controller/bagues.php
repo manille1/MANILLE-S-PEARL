@@ -1,13 +1,10 @@
 <?php
     require "Model/bagues.php";
     const ITEM_PER_PAGE = 15;
- 
-    //var_dump('débuts du code');
+    
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
-
-        //var_dump('ça passe dans le premier if !!');
 
         header('Content-Type: application/json');
 
@@ -32,8 +29,6 @@
         exit();
 
     }
-
-    //var_dump('On passe au view');
     
     require "View/bagues.php";
 ?>
