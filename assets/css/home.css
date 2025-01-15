@@ -22,7 +22,7 @@
     font-size: 2.75em;
 }
 
-.small{
+#intro .small{
     margin: 0;
     font-size: 10px;
     color: aliceblue;
