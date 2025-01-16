@@ -1,0 +1,10 @@
+.fond_bracelet{
+    background: url(../../IMG/bracelet_or.jpg) no-repeat;
+    background-attachment: fixed;
+    padding: 250px 0;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}

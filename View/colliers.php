@@ -1,38 +1,24 @@
-<div class="fond_bijoux">
-    <div id="title">Tous nos colliers</div>
+<div class="fond_collier">
+    <div class="title">Tous nos colliers</div>
 </div>
-<section id="articles">
-    <?php foreach($necklaces as $necklace): ?>
-        <div class="card">
-            <img src="./IMG/<?php echo $necklace['image_name']; ?>.jpg" alt="<?php echo $necklace['image_name']; ?>">
-            <div class="text">
-                <p class="small">Collier</p>
-                <a href="#"><h2><?php echo mb_substr($necklace['name'],0,11) ;?> ...</h2></a>
-                <p class="description"><?php echo mb_substr($necklace['description'], 0, 50)?> ...</p>
-                <div class="info">
-                    <p><?php echo $necklace['price'] ?> €</p>
-                    <p><?php echo $necklace['stock'] ?> en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                    <a class="add_button" href="#"><i class="fa-solid fa-circle-plus"></i></a>
-                </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
+<section id="necklace-articles" class="articles">
+    
 </section>
 
-<style>
-    .fond_bijoux{
-        background: url(IMG/fond_perles.jpg) no-repeat;
-        background-attachment: fixed;
-        padding: 250px 0;
-        background-size: cover;
-        text-align: center;
-        margin: 0;
-        height: auto;
-        width: 100%;
-    }
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    
+  </ul>
+</nav>
 
-    #title{
-        font-size: 135px;
-        color: whitesmoke;
-    }
-</style>
+<script src="./assets/js/services/collier.js" type="module"></script>
+<script src="./assets/js/components/collier.js" type="module"></script>
+<script type ="module">
+    import { refreshNecklaceCard } from "./assets/js/components/collier.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        let currentPage = 1
+
+        refreshNecklaceCard(currentPage)
+    })
+</script>

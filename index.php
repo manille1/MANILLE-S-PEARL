@@ -9,9 +9,31 @@
         header("Location: index.php");
         exit();
     }
+
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+        
+            $componentName = !empty($_GET['component'])
+                ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
+                : 'home';
+
+            $actionName = !empty($_GET['action'])
+                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+                : null;
+
+            if (file_exists("Controller/$componentName.php")) {
+                require "Controller/$componentName.php";
+            } else {
+                throw new Exception("Component '$componentName' does not exist");
+            }
+      
+        exit();
+    }
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +52,10 @@
         </style>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/bagues.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/boucles.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/bracelets.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/colliers.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/home.css">
     </head>
     
@@ -41,9 +67,14 @@
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
 
+            $actionName = !empty($_GET['action'])
+                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+                : null;
+
             if(file_exists("controller/$componentName.php")){
                 require "Controller/$componentName.php";
             } else {
+                require "Controller/articles.php";
                 throw new Exception("Component '$componentName' does not exist");
             }
         ?>
