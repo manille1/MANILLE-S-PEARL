@@ -61,7 +61,6 @@
     
     <body>
         <?php
-            require "_partials/navbar.php";
             
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
@@ -72,8 +71,13 @@
                 : null;
 
             if(file_exists("controller/$componentName.php")){
+                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
-            } else {
+            } elseif ($componentName === 'gestionmarketingadmin'){
+                require "Controller/login.php";
+                /*--Connexion admin : ?component=gestionmarketingadmin--*/
+            
+            }else {
                 require "Controller/articles.php";
                 throw new Exception("Component '$componentName' does not exist");
             }

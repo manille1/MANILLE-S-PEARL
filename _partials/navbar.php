@@ -25,14 +25,14 @@
                     <li><a class="dropdown-item" href="#">Panier</a></li>
                 </ul>
             </li>
-            <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
         </ul>
-        <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-dark" type="submit">Search</button>
-      </form>
+        <form class="d-flex" role="search" autocomplete="off">
+            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
         </div>
     </div>
 </nav> 
+
+<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/autoComplete.min.js"></script>
+<script src="components/autoComplete.js" type="module"></script>
