@@ -1,7 +1,7 @@
 const autoCompleteJS = new autoComplete({
     selector: '#search',
     threshold: 2,  
-
+    
     data: {
         src: async () => {
             const response = await fetch(`index.php`, {
@@ -10,8 +10,9 @@ const autoCompleteJS = new autoComplete({
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-             const data = await response.json()
-             return data.results
+            const data = await response.json()
+            
+            return data.results
          },
          keys: ['name']
     },
@@ -21,6 +22,7 @@ const autoCompleteJS = new autoComplete({
     }
 
 })
+
 
 autoCompleteJS.input.addEventListener('selection', async (e) => {
     //Créer la fonction getArticleModal et l'implémenter dans tt les mvc

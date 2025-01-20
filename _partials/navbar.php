@@ -33,6 +33,3 @@
         </div>
     </div>
 </nav> 
-
-<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/autoComplete.min.js"></script>
-<script src="components/autoComplete.js" type="module"></script>

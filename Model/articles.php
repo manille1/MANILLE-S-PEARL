@@ -34,4 +34,20 @@
 
         return [$res, $count];
     }
+
+    function getArticle (PDO $pdo, int $id){
+        $query="SELECT * FROM article WHERE $id = article.id;";
+        $prep = $pdo->prepare($query);
+        try{
+            $prep->execute();
+        } catch (PDOException $e) {
+            return " erreur : ".$e->getCode() .' :</b> '. $e->getMessage();
+        }
+        
+        $res = $prep->fetchAll(PDO::FETCH_ASSOC);
+        $prep->closeCursor();
+
+
+        return $res;
+    }
 ?>

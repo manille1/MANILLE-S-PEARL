@@ -1,4 +1,5 @@
-import { getArticles } from "../services/article.js";
+import { getArticleById, getArticles } from "../services/article.js";
+//import { getArticleById } from "../services/article.js";
 
 export const refreshList = async (page) => {
     const sectionArcticles = document.querySelector('#articles')
@@ -12,16 +13,16 @@ export const refreshList = async (page) => {
 
         listContent.push(`<div class="card">
                             <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                            <div class="text">
-                                <p class="small">${categoryName}</p>
-                                <a href="#"><h2>${data.results[i].name}</h2></a>
-                                <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                <div class="info">
-                                    <p>${data.results[i].price} €</p>
-                                    <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                    <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                <div class="text">
+                                    <p class="small">${categoryName}</p>
+                                    <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
+                                    <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
+                                    <div class="info">
+                                        <p>${data.results[i].price} €</p>
+                                        <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                        <a href="#" class="add_button" data-id="${data.results[i].id}">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                    </div>
                                 </div>
-                            </div>
                         </div>`)
     }
 
@@ -31,6 +32,24 @@ export const refreshList = async (page) => {
 
     handlePagination(page)
 
+    // Ajout des écouteurs sur les éléments "card-click"
+    const cardClick = document.querySelectorAll('.card-click')
+    
+
+    cardClick.forEach(cardLink => {
+        cardLink.addEventListener('click', async (e) => {
+            e.preventDefault()
+
+            if(cardLink===null){
+                console.log('Id de l\'article est null et donc invalide')
+            } else {
+                const articleId = cardLink.getAttribute('data-id')
+                console.log('articleID :', articleId)
+                await getArticleModal(articleId)
+                
+            }
+        })
+    })
 }
 
 const getCategoryName = (article_category) => {
@@ -97,4 +116,35 @@ const handlePagination = (page) => {
         page++
         await refreshList(page)
     })
+
+}
+
+export const getArticleModal = async (articleId) => {
+    const modalElement = document.querySelector('#staticBackdrop')
+    const modal = new bootstrap.Modal(modalElement)
+    const data = await getArticleById(articleId)
+    console.log('actualArticle :', data.results[0])
+    
+    
+    modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
+
+    const categoryName = getCategoryName(data.results[0].category)
+
+    modalElement.querySelector('.modal-body').innerHTML = `
+                        <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                        <div class="text">
+                            <p class="small">${categoryName}</p>
+                            <a href="#"><h2>${data.results[0].name}</h2></a>
+                            <p class="description">${data.results[0].description}</p>
+                            <div class="info">
+                                <p>Prix : ${data.results[0].price} €</p>
+                                <p>${data.results[0].stock === 0 ? 'Rupture de stock' : data.results[0].stock + ' en stock'} <i class="fa-solid fa-boxes-stacked"></i></p>
+                            </div>
+                        </div>`
+    modalElement.querySelector('.modal-footer').innerHTML = `
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                        ${data.results[0].stock === 0 ? '' : 
+                            '<button type="button" class="btn btn-dark add_button">Ajouter au panier <i class="fa-solid fa-circle-plus"></i></button>'}
+                        `
+    modal.show()
 }
