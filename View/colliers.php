@@ -1,4 +1,4 @@
-<div class="fond_collier">
+<div id="fond_collier">
     <div class="title">Tous nos colliers</div>
 </div>
 <section id="necklace-articles" class="articles">

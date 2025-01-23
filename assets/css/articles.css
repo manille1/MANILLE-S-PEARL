@@ -1,3 +1,47 @@
+#fond_collier{
+    background: url(../../IMG/fond_perles.jpg) no-repeat;
+    background-attachment: fixed;
+    padding: 250px 0;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}
+
+#fond_bracelet{
+    background: url(../../IMG/bracelet_or.jpg) no-repeat;
+    background-attachment: fixed;
+    padding: 250px 0;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}
+
+#fond_boucles{
+    background: url(../../IMG/boucles_soleil.jpg) no-repeat;
+    background-attachment: fixed;
+    padding: 250px 0;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}
+
+#fond_bagues{
+    background: url(../../IMG/bague_perles.jpg) no-repeat;
+    background-attachment: fixed;
+    padding: 250px 0;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}
+
 .articles{
     display: flex;
     justify-content: center;
@@ -11,7 +55,8 @@
 
 a{
     text-decoration: none;
-    color: black;
+    color: #152331;
+
 }
 
 .card{
@@ -22,6 +67,7 @@ a{
     border-radius: 13px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease;
+    color: #152331;
 }
 
 .card:hover{
@@ -40,7 +86,7 @@ img{
 .small{
     margin: 0;
     font-size: 15px;
-    color: #2e2e2e;
+    /* color: #2e2e2e; */
     font-style: italic;
 }
 
@@ -51,7 +97,7 @@ h2{
 .text{
     padding: 13px;
     text-align: start;
-    color: black;
+    /* color: black; */
 }
 
 p{
@@ -74,11 +120,11 @@ p{
 }
 
 .modal .info p:first-child{
-    color: #3b3b3b;
+    /* color: #3b3b3b; */
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .modal .info p:first-child:hover{
     transform: scale(1.08);
-    color: black;
+    /* color: black; */
 }

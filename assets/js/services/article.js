@@ -1,4 +1,4 @@
-export const getArticles = async (currentPage = 1, search = '') => {
+export const getArticles = async (currentPage = 1, search) => {
     try {
         const response = await fetch(`index.php?component=articles&page=${currentPage}&search=${search}`, {
             method: 'GET',

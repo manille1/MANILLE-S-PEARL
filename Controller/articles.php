@@ -5,6 +5,8 @@
     // var_dump('On est au début du controller 👍');
     const LIST_ARTICLES_ITEMS_PER_PAGE = 15;
 
+    //var_dump($_GET['search']);
+
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
             
@@ -25,7 +27,7 @@
             } else {
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $search = $_GET['search'] . 'est votre recherche';
-                //var_dump($search);
+                //var_dump($_GET['search']);
 
                 [$articles, $count] = getAllArticles($pdo, LIST_ARTICLES_ITEMS_PER_PAGE, $search,$page);
                 
