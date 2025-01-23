@@ -29,9 +29,9 @@
         </ul>
         <form class="d-flex" role="search">
             <input name="component" value="articles" type="hidden">
-            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" method="GET"
+            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                    name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button id="search-btn" class="btn btn-outline-dark" type="submit">Search</button>
+            <button id="search-btn" class="btn btn-outline-dark" type="button">Search</button>
         </form>
         </div>
     </div>

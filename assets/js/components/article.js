@@ -1,19 +1,43 @@
 import { getArticleById, getArticles } from "../services/article.js";
-//import { getArticleById } from "../services/article.js";
+import { showToast } from "./shared/showToast.js";
 
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
     const data = await getArticles(page, search)
-    //console.log('data', data)
+    console.log('data :', data);
     
-    document.getElementById('search-btn').addEventListener('click', () => {
-        getArticles(1, document.getElementById('searchInput').value);
-    });
+    
     
 
     let listContent = []
+    
+    if (data === "pas de résultat") {
+        showToast('Aucun résultat ne correspond à votre recherche :/', 'bg-danger')
 
-    for(let i = 0; i < data.results.length; i++){
+    } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
+        const categoryName = getCategoryName(data.results[0].category)
+
+        listContent.push(`<div class="card">
+                            <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                                <div class="text">
+                                    <p class="small">${categoryName}</p>
+                                    <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
+                                    <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
+                                    <div class="info">
+                                        <p>${data.results[0].price} €</p>
+                                        <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                        <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                    </div>
+                                </div>
+                        </div>`)
+
+        sectionArcticles.innerHTML = listContent.join('')
+        
+        const articleId = data.results[0].id
+        await getArticleModal(articleId)
+
+    } else {
+        for(let i = 0; i < data.results.length; i++){
 
         const categoryName = getCategoryName(data.results[i].category)
 
@@ -30,32 +54,34 @@ export const refreshList = async (page, search) => {
                                     </div>
                                 </div>
                         </div>`)
+        }
+
+        sectionArcticles.innerHTML = listContent.join('')
+
+        document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
+
+        handlePagination(page)
+
+        // Ajout des écouteurs sur les éléments "card-click"
+        const cardClick = document.querySelectorAll('.card-click')
+            
+
+        cardClick.forEach(cardLink => {
+            cardLink.addEventListener('click', async (e) => {
+                e.preventDefault()
+
+                if(cardLink===null){
+                    console.log('Id de l\'article est null et donc invalide')
+                } else {
+                    const articleId = cardLink.getAttribute('data-id')
+                    await getArticleModal(articleId)
+                        
+                }
+            })
+        })
     }
 
-    sectionArcticles.innerHTML = listContent.join('')
-
-    document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-
-    handlePagination(page)
-
-    // Ajout des écouteurs sur les éléments "card-click"
-    const cardClick = document.querySelectorAll('.card-click')
     
-
-    cardClick.forEach(cardLink => {
-        cardLink.addEventListener('click', async (e) => {
-            e.preventDefault()
-
-            if(cardLink===null){
-                console.log('Id de l\'article est null et donc invalide')
-            } else {
-                const articleId = cardLink.getAttribute('data-id')
-                console.log('articleID :', articleId)
-                await getArticleModal(articleId)
-                
-            }
-        })
-    })
 }
 
 const getCategoryName = (article_category) => {

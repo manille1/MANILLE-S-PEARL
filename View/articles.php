@@ -14,10 +14,19 @@
     import { refreshList, getArticleModal } from "./assets/js/components/article.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
+      const searchInput = document.querySelector('#search')
+      const searchBtn = document.querySelector('#search-btn')
+
       let currentPage = 1
-        const search = ''
+      let search = searchInput.value
+      
+      
+      await refreshList(currentPage, search)  
+
+      searchBtn.addEventListener('click', async() => {
+        search = searchInput.value
+        await refreshList(currentPage, search)
         
-        await refreshList(currentPage, search)  
-            
+      })     
     })
 </script>
