@@ -14,28 +14,10 @@
     import { refreshList, getArticleModal } from "./assets/js/components/article.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
-        let currentPage = 1
-        await refreshList(currentPage)
+      let currentPage = 1
+        const search = ''
         
-        // const card = document.querySelectorAll('.card')
-        // const card = []
-        // for(let i = 0; i < cardCount; i++){
-        //   card.push(document.querySelector('.card'))
-        // }
-        
-        // console.log(`Voici card : ${card}`)
-
-        // const actualCard = document.querySelector('.card-click')
-
-        // array.forEach(element => {
-        //   cardCount.addEventListener('click', async () => {
-        //         console.log('Le click passe dans l\'écoute')  
-        //         e.preventDefault()
-        //         const articleId = e.target.getAttribute('data-id')
-        //         console.log('articleId :', articleId)
-        //         await getArticleModal(articleId)
-        //     })
-        // });
+        await refreshList(currentPage, search)  
             
     })
 </script>

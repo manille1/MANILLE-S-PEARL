@@ -1,6 +1,6 @@
-export const getArticles = async (currentPage = 1) => {
+export const getArticles = async (currentPage = 1, search = '') => {
     try {
-        const response = await fetch(`index.php?component=articles&page=${currentPage}`, {
+        const response = await fetch(`index.php?component=articles&page=${currentPage}&search=${search}`, {
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'

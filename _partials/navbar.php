@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav id="nav" class="navbar navbar-expand-lg bg-body-tertiary" 
+    style="<?php echo (strpos($_SERVER['REQUEST_URI'], 'component') === false) ? 'position: fixed; width: 100%;' : ''; ?>">
     <div class="container-fluid">
         <a class="nav-link active" aria-current="page" href="index.php">
             <img id="logo" src="./IMG/logo MANILLE'S PEARL.png" alt="logo MANILLE'S PEARL">
@@ -26,10 +27,12 @@
                 </ul>
             </li>
         </ul>
-        <form class="d-flex" role="search" autocomplete="off">
-            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
-            <button class="btn btn-outline-dark" type="submit">Search</button>
+        <form class="d-flex" role="search">
+            <input name="component" value="articles" type="hidden">
+            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" method="GET"
+                   name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <button id="search-btn" class="btn btn-outline-dark" type="submit">Search</button>
         </form>
         </div>
     </div>
-</nav> 
+</nav>

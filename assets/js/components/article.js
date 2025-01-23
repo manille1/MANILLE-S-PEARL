@@ -1,9 +1,15 @@
 import { getArticleById, getArticles } from "../services/article.js";
 //import { getArticleById } from "../services/article.js";
 
-export const refreshList = async (page) => {
+export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
-    const data = await getArticles(page)
+    const data = await getArticles(page, search)
+    //console.log('data', data)
+    
+    document.getElementById('search-btn').addEventListener('click', () => {
+        getArticles(1, document.getElementById('searchInput').value);
+    });
+    
 
     let listContent = []
 
