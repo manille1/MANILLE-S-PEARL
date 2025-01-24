@@ -20,6 +20,10 @@
                 ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
                 : 'home';
 
+            $specificCategory = !empty($_GET['category'])
+                ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
+                : null;
+
             $searchContent = !empty($_GET['search'])
                 ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8')
                 : null;
@@ -70,6 +74,10 @@
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
+
+            $specificCategory = !empty($_GET['category'])
+            ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
+            : null;
 
             $searchContent = !empty($_GET['search'])
             ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8')

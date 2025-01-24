@@ -1,4 +1,4 @@
-#fond_collier{
+#fond_colliers{
     background: url(../../IMG/fond_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
@@ -9,7 +9,7 @@
     width: 100%;
 }
 
-#fond_bracelet{
+#fond_bracelets{
     background: url(../../IMG/bracelet_or.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;

@@ -19,19 +19,19 @@
         <div id="colliers_img" class="card_img"><img src="./IMG/fond_perles.jpg" alt="collier de perles"></div>
         <h3>Colliers</h3>
         <p>Nos magnifiques colliers font l'unanimité !</br>Nous en avons une variétés, n'hésité pas à jetée un coup d'oeuil !</p>
-        <a href="index.php?component=colliers">Tous nos colliers</a>
+        <a href="index.php?component=specificCategory&category=colliers">Tous nos colliers</a>
     </div>
     <div id="card_link_bagues" class="card_phare">
         <div id="Bagues_img" class="card_img"><img src="./IMG/bague_diamant.jpg" alt="bague den diamant"></div>
         <h3>Bagues</h3>
         <p>Nos magnifiques bagues font l'unanimité !</br>Nous en avons une variétés, n'hésité pas à jetée un coup d'oeuil !</p>
-        <a href="index.php?component=Bagues">Tous nos bagues</a>
+        <a href="index.php?component=specificCategory&category=bagues">Tous nos bagues</a>
     </div>
     <div id="card_link_Boucles" class="card_phare">
         <div id="boucles_img" class="card_img"><img src="./IMG/boucles_perles.jpg" alt="boucles de perles"></div>
         <h3>Boucles d'oreilles</h3>
         <p>Nos magnifiques boucles d'oreilles font l'unanimité ! Nous en avons une variétés, n'hésité pas à jetée un coup d'oeuil !</p>
-        <a href="index.php?component=Boucles">Tous nos boucles d'oreilles</a>
+        <a href="index.php?component=specificCategory&category=boucles">Tous nos boucles d'oreilles</a>
     </div>
 </div>
 

@@ -2,3 +2,4 @@ IMG/
 composer.json
 composer.lock
 vendor/
+scripts/
