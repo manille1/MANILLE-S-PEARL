@@ -8,7 +8,6 @@
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
 
-
         header('Content-Type: application/json');
 
         try{             
@@ -18,26 +17,27 @@
                 if (empty($article)) {
                     http_response_code(404);
                     echo json_encode(['error' => 'No resource for specic article with given identifier found']);
+
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $article]);
+
                 }
 
             } else {
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $search = $_GET['search'];
+                $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
 
                 [$articles, $count] = getAllArticles($pdo, LIST_ARTICLES_ITEMS_PER_PAGE, $search, $page);
-
                 
-                if (empty($articles) && $search !== ''){
-                    echo json_encode('pas de résultat');
-                } else if (empty($articles)) {
+                if (empty($articles)) {
                     http_response_code(404);
                     echo json_encode(['error' => 'No resource with given identifier found']);
+
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $articles, 'count' => $count]);
+
                 }
             } 
 

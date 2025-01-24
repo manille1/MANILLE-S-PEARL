@@ -1,6 +1,6 @@
 <?php
     function getAllArticles (PDO $pdo, int $itemPerPage, string $search, int $page = 1){ 
-        $offset = (($page - 1) * $itemPerPage);
+        $offset = ($page - 1) * $itemPerPage;
 
         $searchPart = !empty($search)? 'WHERE article.name LIKE :search' : '';
 
@@ -40,7 +40,6 @@
 
         $count = $prep->fetch(PDO::FETCH_ASSOC);
         $prep->closeCursor();
-
 
         return [$res, $count];
     }

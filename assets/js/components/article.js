@@ -4,15 +4,13 @@ import { showToast } from "./shared/showToast.js";
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
     const data = await getArticles(page, search)
-    console.log('data :', data);
-    
-    
+    //console.log('data :', data);
     
 
     let listContent = []
     
-    if (data === "pas de résultat") {
-        showToast('Aucun résultat ne correspond à votre recherche :/', 'bg-danger')
+    if (data.error === "No resource with given identifier found") {
+        showToast('Aucun résultat trouvé :/', 'bg-danger')
 
     } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
         const categoryName = getCategoryName(data.results[0].category)
@@ -60,11 +58,11 @@ export const refreshList = async (page, search) => {
 
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
 
-        handlePagination(page)
+        handlePagination(page, search)
+
 
         // Ajout des écouteurs sur les éléments "card-click"
         const cardClick = document.querySelectorAll('.card-click')
-            
 
         cardClick.forEach(cardLink => {
             cardLink.addEventListener('click', async (e) => {
@@ -80,9 +78,9 @@ export const refreshList = async (page, search) => {
             })
         })
     }
-
-    
 }
+
+
 
 const getCategoryName = (article_category) => {
     let categoryType = ''
@@ -109,46 +107,6 @@ const getCategoryName = (article_category) => {
     }
 
     return categoryType
-}
-
-const getPagination = (total) => {
-    const countPages =  Math.ceil(total / 15)
-    let paginationButton = []
-    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="previous-link">Précédent</a></li>`)
-
-    for (let i = 1; i <= countPages; i++){
-        paginationButton.push(`<li class="page-item"><a data-page="${i}" class="page-link pagination-btn text-dark-emphasis" href="#">${i}</a></li>`)
-    }
-
-    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="next-link">Suivant</a></li>`)
-
-    return paginationButton.join('')
-}
-
-const handlePagination = (page) => {
-    const previousLink = document.querySelector('#previous-link')
-    const nextLink = document.querySelector('#next-link')
-    const paginationBtns = document.querySelectorAll('.pagination-btn')
-
-    previousLink.addEventListener('click', async () => {
-        if (page > 1 ){
-            page--
-            await refreshList(page)
-        }
-    })
-
-    for (let i = 0; i < paginationBtns.length; i++){
-        paginationBtns[i].addEventListener('click', async (e) => {
-            const pageNumber = e.target.getAttribute('data-page')
-            await refreshList(pageNumber)
-        })
-    }
-
-    nextLink.addEventListener('click', async () => {
-        page++
-        await refreshList(page)
-    })
-
 }
 
 export const getArticleModal = async (articleId) => {
@@ -179,4 +137,44 @@ export const getArticleModal = async (articleId) => {
                             '<button type="button" class="btn btn-dark add_button">Ajouter au panier <i class="fa-solid fa-circle-plus"></i></button>'}
                         `
     modal.show()
+}
+
+const getPagination = (total) => {
+    const countPages =  Math.ceil(total / 15)
+    let paginationButton = []
+    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="previous-link">Précédent</a></li>`)
+
+    for (let i = 1; i <= countPages; i++){
+        paginationButton.push(`<li class="page-item"><a data-page="${i}" class="page-link pagination-btn text-dark-emphasis" href="#">${i}</a></li>`)
+    }
+
+    paginationButton.push(` <li class="page-item"><a class="page-link text-dark-emphasis" href="#" id="next-link">Suivant</a></li>`)
+
+    return paginationButton.join('')
+}
+
+const handlePagination = (page, search) => {
+    const previousLink = document.querySelector('#previous-link')
+    const nextLink = document.querySelector('#next-link')
+    const paginationBtns = document.querySelectorAll('.pagination-btn')
+
+    previousLink.addEventListener('click', async () => {
+        if (page > 1 ){
+            page--
+            await refreshList(page, search)
+        }
+    })
+
+    for (let i = 0; i < paginationBtns.length; i++){
+        paginationBtns[i].addEventListener('click', async (e) => {
+            const pageNumber = e.target.getAttribute('data-page')
+            await refreshList(pageNumber, search)
+        })
+    }
+
+    nextLink.addEventListener('click', async () => {
+        page++
+        await refreshList(page, search)
+    })
+
 }
