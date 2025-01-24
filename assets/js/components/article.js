@@ -1,5 +1,6 @@
 import { getArticleById, getArticles } from "../services/article.js";
 import { showToast } from "./shared/showToast.js";
+import { getCategoryName } from "./shared/getCategoryName.js";
 
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
@@ -78,35 +79,6 @@ export const refreshList = async (page, search) => {
             })
         })
     }
-}
-
-
-
-const getCategoryName = (article_category) => {
-    let categoryType = ''
-    switch (String(article_category)){
-        case '1':
-            categoryType = 'Collier'  
-            break
-    
-        case '2':
-            categoryType = 'Bracelets'  
-            break
-    
-        case '3':
-            categoryType = 'Bague'   
-            break
-    
-        case '4':
-            categoryType = 'Boucles d\'oreilles'
-            break
-
-        default:
-            categoryType = 'blague'
-            break
-    }
-
-    return categoryType
 }
 
 export const getArticleModal = async (articleId) => {

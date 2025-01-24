@@ -9,12 +9,13 @@
 
         try {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
+            $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
 
             switch ($_GET['category']) {
                 case 'colliers':
-                    [$necklaces, $count] = getAllNecklaces($pdo, ITEM_PER_PAGE, $page);
+                    [$necklaces, $count] = getAllNecklaces($pdo, ITEM_PER_PAGE, $search, $page);
                 
+                    //var_dump('collier');
                     if (empty($necklaces)) {
                         http_response_code(404);
                         echo json_encode(['error' => 'No resource ring with given identifier found']);
@@ -25,8 +26,9 @@
                     break;
                 
                 case 'bracelets':
-                    [$bracelets, $count] = getAllBracelets($pdo, ITEM_PER_PAGE, $page);
+                    [$bracelets, $count] = getAllBracelets($pdo, ITEM_PER_PAGE, $search, $page);
                 
+                    //var_dump('bracelets');
                     if (empty($bracelets)) {
                         http_response_code(404);
                         echo json_encode(['error' => 'No resource ring with given identifier found']);
@@ -37,8 +39,9 @@
                     break;
                     
                 case 'boucles':
-                    [$earrings, $count] = getAllEarrings($pdo, ITEM_PER_PAGE, $page);
+                    [$earrings, $count] = getAllEarrings($pdo, ITEM_PER_PAGE, $search, $page);
                 
+                    //var_dump('boucles');
                     if (empty($earrings)) {
                         http_response_code(404);
                         echo json_encode(['error' => 'No resource ring with given identifier found']);
@@ -49,8 +52,9 @@
                     break;
                 
                 case 'bagues':
-                    [$rings, $count] = getAllRings($pdo, ITEM_PER_PAGE, $page);
+                    [$rings, $count] = getAllRings($pdo, ITEM_PER_PAGE, $search, $page);
         
+                    //var_dump('bagues');
                     if (empty($rings)) {
                         http_response_code(404);
                         echo json_encode(['error' => 'No resource ring with given identifier found']);
