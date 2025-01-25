@@ -10,8 +10,6 @@
         exit();
     }
 
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
@@ -70,7 +68,10 @@
     
     <body>
         <?php
-            
+            require("_partials/errors.php");
+            var_dump($_SESSION);
+            //session_destroy();
+
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
@@ -84,23 +85,37 @@
             : null;
 
             $actionName = !empty($_GET['action'])
-                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
-                : null;
+            ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+            : null;
 
-            if(file_exists("controller/$componentName.php")){
-                require "_partials/navbar.php";
-                require "Controller/$componentName.php";
-            } elseif ($componentName === 'gestionmarketingadmin'){
+
+            if ($componentName === 'gestionmarketingadmin'){
                 require "Controller/login.php";
                 /*--Connexion admin : ?component=gestionmarketingadmin--*/
+
+                if (!empty($_SESSION)) {
+                    require "_partials/navbar.php";
+                    require "Controller/gestion.php";
+
+                    if(file_exists("controller/$componentName.php")){
+                        require "Controller/$componentName.php";
+                    } else {
+                        require "Controller/login.php";
+                        throw new Exception("Component '$componentName' does not exist");
+                    }
+                }
             
-            }else {
-                require "Controller/articles.php";
+            } elseif(empty($_SESSION) && file_exists("controller/$componentName.php")){
+                require "_partials/navbar.php";
+                require "Controller/$componentName.php";
+
+            } else {
+                require "Controller/home.php";
                 throw new Exception("Component '$componentName' does not exist");
             }
-            
-        require "_partials/modal.php";
-        require "_partials/toast.html";
+           
+        //require "_partials/modal.html";
+        //require "_partials/toast.html";
         ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
