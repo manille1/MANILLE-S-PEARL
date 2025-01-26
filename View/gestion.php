@@ -1,6 +1,5 @@
-<h1> Bienvenue <?php echo $_SESSION['username']; ?></h1>
+<h1 id="intro-admin"> Bienvenue <?php echo $_SESSION['username']; ?></h1>
 
-<!--petit texte pour expliquer à l'utilisateur ce qu'il peut faire en fonction de sont rôle-->
 <?php if ($_SESSION['role'] === 'worker') { ?>
     <div id="info-right">
         <p>Vous êtes un employé de niveau 2. Vous avez donc accés à tous les produits et toutes les catégories.
@@ -13,19 +12,9 @@
     </div>
 <?php }; ?>
 
-<?php if ($_SESSION['role'] === 'worker') { ?>
-    <div id="card-category">
-        
-    </div>
-<?php } elseif ($_SESSION['role'] === 'admin') { ?>
-    <div id="card-category">
-        
-    </div>
-<?php }; ?>
-
 <div id="category-choice">
     <h2>Que voulez vous faire ?</h2>
-    <divc class="card-choice">
+    <div class="card-choice">
         <div><img src="./IMG/article.jpg" alt="boîte empiler"></div>
         <h3>Articles</h3>
         <p>Tous les articles à la ventes ou non sont visible ici.</p>
