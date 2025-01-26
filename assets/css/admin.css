@@ -3,3 +3,50 @@
     margin: 0 2em;
     /*color: # */
 }
+
+#category-choice{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    background-color: aliceblue;
+    padding: 7em 3em;
+    color: black;
+    margin: 5em 0;
+}
+
+
+#category-choice h2{
+    font-family: Limelight;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+}
+
+
+.card-choice{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 30px;
+    padding: 25px;
+    width: 380px;
+    background-color: #ffffff;
+    border-radius: 13px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.card-choice img{
+    height: 250px;
+    width: 205px;
+    border-radius: 100px;
+}
+
+
+.card-choice > a{
+    border-color: #152331;
+    border-radius: 8px;
+    border-width: 1px;
+}

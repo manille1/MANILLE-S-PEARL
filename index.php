@@ -18,6 +18,10 @@
                 ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
                 : 'home';
 
+            $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
+                ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
+                : null;
+
             $specificCategory = !empty($_GET['category'])
                 ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
                 : null;
@@ -82,6 +86,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/home.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/admin.css">
     </head>
     
     <body>

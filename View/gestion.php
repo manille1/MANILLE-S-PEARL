@@ -13,7 +13,6 @@
     </div>
 <?php }; ?>
 
-<!-- 3 cards avec image pour chaque CRUD toujours en fonction du role-->
 <?php if ($_SESSION['role'] === 'worker') { ?>
     <div id="card-category">
         
@@ -23,3 +22,29 @@
         
     </div>
 <?php }; ?>
+
+<div id="category-choice">
+    <h2>Que voulez vous faire ?</h2>
+    <divc class="card-choice">
+        <div><img src="./IMG/article.jpg" alt="boîte empiler"></div>
+        <h3>Articles</h3>
+        <p>Tous les articles à la ventes ou non sont visible ici.</p>
+        <a href="index.php?component=resources&resoures=crud-articles">Tous nos articles</a>
+    </div>
+    
+    <div class="card-choice">
+        <div><img src="./IMG/post-it.jpg" alt="post-it d'organisation"></div>
+        <h3>Catégories</h3>
+        <p>Toutes les catégories disponibles ou non sont visible ici.</p>
+        <a href="index.php?component=resources&resoures=crud-categories">Toutes nos categories</a>
+    </div>
+
+    <?php if($_SESSION['role'] === 'admin') { ?>
+        <div class="card-choice">
+            <div><img src="./IMG/users.jpg" alt="users"></div>
+            <h3>Utilisateurs</h3>
+            <p>Tous les utilisateurs sont visible ici.</p>
+            <a href="index.php?component=resources&resoures=crud-users">Tous nos utilisateurs</a>
+        </div>
+    <?php }; ?>
+</div>
