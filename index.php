@@ -30,9 +30,27 @@
                 ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
                 : null;
 
-            if (file_exists("Controller/$componentName.php")) {
+            if (!empty($_SESSION['auth'])) {
+                require "_partials/navbar.php";
+                header("Location: index.php?component=gestion");
+    
+                if(file_exists("controller/$componentName.php")){
+                    require "Controller/$componentName.php";
+                } else {
+                    require "Controller/login.php";
+                    throw new Exception("Component '$componentName' does not exist");
+                }
+                exit;
+
+            } elseif ($componentName === 'gestionmarketingadmin'){
+                require "Controller/login.php";
+                
+            } elseif (empty($_SESSION) && file_exists("controller/$componentName.php")) {
+                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
+    
             } else {
+                require "Controller/home.php";
                 throw new Exception("Component '$componentName' does not exist");
             }
       
@@ -69,8 +87,6 @@
     <body>
         <?php
             require("_partials/errors.php");
-            var_dump($_SESSION);
-            //session_destroy();
 
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
@@ -89,22 +105,25 @@
             : null;
 
 
-            if ($componentName === 'gestionmarketingadmin'){
+            if (!empty($_SESSION['auth'])) {
+                require "_partials/navbar.php";
+
+                if (!isset($_GET['component'])|| $_GET['component'] !== 'gestion'){
+                    header("Location: index.php?component=gestion");
+                }
+    
+                if(file_exists("controller/$componentName.php")){
+                    require "Controller/$componentName.php";
+                } else {
+                    require "Controller/login.php";
+                    throw new Exception("Component '$componentName' does not exist");
+                }
+                exit;
+    
+            } elseif ($componentName === 'gestionmarketingadmin'){
                 require "Controller/login.php";
                 /*--Connexion admin : ?component=gestionmarketingadmin--*/
-
-                if (!empty($_SESSION)) {
-                    require "_partials/navbar.php";
-                    require "Controller/gestion.php";
-
-                    if(file_exists("controller/$componentName.php")){
-                        require "Controller/$componentName.php";
-                    } else {
-                        require "Controller/login.php";
-                        throw new Exception("Component '$componentName' does not exist");
-                    }
-                }
-            
+                    
             } elseif(empty($_SESSION) && file_exists("controller/$componentName.php")){
                 require "_partials/navbar.php";
                 require "Controller/$componentName.php";

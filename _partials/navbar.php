@@ -21,13 +21,20 @@
                     <li><a class="dropdown-item" href="index.php?component=bracelets">Bracelets</a></li>
                     <li><a class="dropdown-item" href="index.php?component=bagues">Bagues</a></li>
                     <li><a class="dropdown-item" href="index.php?component=boucles">Boucles d'oreilles</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Panier</a></li>
+                    <?php if (empty($_SESSION)) { ?>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="index.php?component=cart">Panier</a></li>
+                    <?php }; ?>
                 </ul>
             </li>
-            <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
+            <?php if(!empty($_SESSION['auth'])){ ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?component=users">Voir tout les utilisateurs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link bs-danger-text-emphasis" href="index.php?deconnect">Deconnexion</a>
+                </li>
+            <?php }; ?>
         </ul>
         <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

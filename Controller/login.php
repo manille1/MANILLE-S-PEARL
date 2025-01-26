@@ -23,6 +23,7 @@
                 $_SESSION["username"] = $connexion['username'];
                 $_SESSION["role"] = $connexion['role'] === 1 ? 'admin' : 'worker';
                 header("Content-Type: application/json");
+                
                 echo json_encode(['authentication' => true]);
                 exit();
             }
