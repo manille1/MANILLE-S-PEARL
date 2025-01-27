@@ -37,9 +37,14 @@
             <?php }; ?>
         </ul>
         <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-dark" type="submit">Search</button>
-      </form>
+            <input name="component" value="articles" type="hidden">
+            <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                   name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                   style="<?php echo (strpos($_SERVER['REQUEST_URI'], 'component') === false) ? 'display: none;' : ''; ?>">
+            <button id="search-btn" class="btn btn-outline-dark" type="button"
+                style="<?php echo (strpos($_SERVER['REQUEST_URI'], 'component') === false) ? 'display: none;' : ''; ?>">
+                Search</button>
+        </form>
         </div>
     </div>
 </nav> 

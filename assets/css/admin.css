@@ -1,3 +1,11 @@
+h1{
+    margin: 1em 0;
+    text-align: center;
+    color: #152331;
+    font-family: Limelight;
+    font-size: 5.3em;
+}
+
 #intro-admin{
     display: flex;
     flex-direction: column;
@@ -63,6 +71,8 @@
 
 
 .card-choice > a{
+    text-decoration: underline;
+    color: #3d3d3d;
     border-color: #152331;
     border-radius: 8px;
     border-width: 1px;

@@ -20,7 +20,7 @@
 
             $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
                 ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
-                : null;
+                : 'crud-articles';
 
             $specificCategory = !empty($_GET['category'])
                 ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
@@ -35,7 +35,6 @@
                 : null;
 
             if (!empty($_SESSION['auth'])) {
-                require "_partials/navbar.php";
                 header("Location: index.php?component=gestion");
     
                 if(file_exists("controller/$componentName.php")){
@@ -50,7 +49,6 @@
                 require "Controller/login.php";
                 
             } elseif (empty($_SESSION) && file_exists("controller/$componentName.php")) {
-                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
     
             } else {
@@ -97,6 +95,10 @@
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
 
+            $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
+            ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
+            : 'crud-articles';
+
             $specificCategory = !empty($_GET['category'])
             ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
             : null;
@@ -111,17 +113,16 @@
 
 
             if (!empty($_SESSION['auth'])) {
-                require "_partials/navbar.php";
-
-                if (!isset($_GET['component'])|| $_GET['component'] !== 'gestion'){
+                if (!isset($_GET['component']) || $_GET['component'] == 'gestionmarketingadmin'){
                     header("Location: index.php?component=gestion");
                 }
     
-                if(file_exists("controller/$componentName.php")){
+                if(file_exists("Controller/$componentName.php")){
+                require "_partials/navbar.php";
                     require "Controller/$componentName.php";
                 } else {
                     require "Controller/login.php";
-                    throw new Exception("Component '$componentName' does not exist");
+                    throw new Exception("Component '$componentName' does not exist, sorry !");
                 }
                 exit;
     
@@ -129,7 +130,7 @@
                 require "Controller/login.php";
                 /*--Connexion admin : ?component=gestionmarketingadmin--*/
                     
-            } elseif(empty($_SESSION) && file_exists("controller/$componentName.php")){
+            } elseif(empty($_SESSION) && file_exists("Controller/$componentName.php")){
                 require "_partials/navbar.php";
                 require "Controller/$componentName.php";
 

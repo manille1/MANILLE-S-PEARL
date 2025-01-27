@@ -18,7 +18,7 @@
         <div><img src="./IMG/article.jpg" alt="boîte empiler"></div>
         <h3>Articles</h3>
         <p>Tous les articles à la ventes ou non sont visible ici.</p>
-        <a href="index.php?component=resources&resoures=crud-articles">Tous nos articles</a>
+        <a href="index.php?component=resources&resources=crud-articles">Tous nos articles</a>
     </div>
     
     <div class="card-choice">
