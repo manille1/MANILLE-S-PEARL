@@ -1,12 +1,13 @@
 <?php
     require "Model/articles.php";
 
-    // var_dump('On est au début du controller 👍');
+    //var_dump('On est au début du controller 👍');
     const LIST_ARTICLES_ITEMS_PER_PAGE = 15;
-
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
+
+        var_dump('la requête AJAX est passer');
 
         header('Content-Type: application/json');
 

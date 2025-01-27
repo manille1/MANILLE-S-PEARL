@@ -83,11 +83,10 @@
         <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/home.css">
     </head>
-    
     <body>
         <?php
-            require("_partials/errors.php");
-
+            require "_partials/errors.php";
+            
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
@@ -100,25 +99,14 @@
             ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8')
             : null;
 
-            $specificCategory = !empty($_GET['category'])
-            ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
-            : null;
-
-            $searchContent = !empty($_GET['search'])
-            ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8')
-            : null;
-
             $actionName = !empty($_GET['action'])
-            ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
-            : null;
+                ? htmlspecialchars($_GET['action'], ENT_QUOTES, 'UTF-8')
+                : null;
 
 
             if (!empty($_SESSION['auth'])) {
                 require "_partials/navbar.php";
-
-                if (!isset($_GET['component'])|| $_GET['component'] !== 'gestion'){
-                    header("Location: index.php?component=gestion");
-                }
+                header("Location: index.php?component=gestion");
     
                 if(file_exists("controller/$componentName.php")){
                     require "Controller/$componentName.php";
@@ -134,7 +122,6 @@
                     
             } elseif(empty($_SESSION) && file_exists("controller/$componentName.php")){
                 require "_partials/navbar.php";
-                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
 
             } else {
@@ -142,8 +129,8 @@
                 throw new Exception("Component '$componentName' does not exist");
             }
             
-        require "_partials/modal.php";
-        require "_partials/toast.html";
+            require "_partials/modal.php";
+            require "_partials/toast.html";
         ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
