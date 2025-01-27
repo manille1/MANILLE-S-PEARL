@@ -1,10 +1,10 @@
-import { getArticleById, getAllArticles } from "../services/article.js";
+import { getArticleById, getArticles } from "../services/article.js";
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
-    const data = await getAllArticles(page, search)
+    const data = await getArticles(page, search)
     console.log('data :', data);
     
 
