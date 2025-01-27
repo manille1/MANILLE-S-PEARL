@@ -58,9 +58,9 @@ export const getRingArticles = async (currentPage = 1, search) => {
     }
 }
 
-export const getArticleById = async (category, articleId) => {
+export const getArticleById = async (articleId) => {
     try {
-        const response = await fetch(`index.php?component=specificCategory&category=${category}&id=${articleId}`, {
+        const response = await fetch(`index.php?component=specificCategory&id=${articleId}`, {
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'

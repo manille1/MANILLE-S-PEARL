@@ -85,7 +85,7 @@ export const getArticleModal = async (articleId) => {
     const modalElement = document.querySelector('#staticBackdrop')
     const modal = new bootstrap.Modal(modalElement)
     const data = await getArticleById(articleId)
-    console.log('actualArticle :', data.results[0])
+    console.log('actualArticle :', data)
     
     
     modalElement.querySelector('.modal-title').innerHTML = data.results[0].name

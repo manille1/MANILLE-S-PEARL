@@ -171,8 +171,8 @@
         return [$res, $count];        
     }
 
-    function getArticle (PDO $pdo, int $categoryNumber, int $id){
-        $query="SELECT * FROM article WHERE category=$categoryNumber AND WHERE $id = article.id;";
+    function getArticle (PDO $pdo, int $id){
+        $query="SELECT * FROM article WHERE article.id=$id;";
         $prep = $pdo->prepare($query);
         try{
             $prep->execute();
@@ -182,7 +182,6 @@
         
         $res = $prep->fetchAll(PDO::FETCH_ASSOC);
         $prep->closeCursor();
-
 
         return $res;
     }

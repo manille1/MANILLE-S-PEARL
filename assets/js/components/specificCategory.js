@@ -8,7 +8,6 @@ export const refreshNecklaceCard = async (page, search) => {
     //console.log(data)
     
     
-    
     let cardContent = []
 
     if (data.error === "No resource with given identifier found") {
@@ -63,10 +62,9 @@ export const refreshNecklaceCard = async (page, search) => {
         cardClick.forEach(cardLink => {
             cardLink.addEventListener('click', async (e) => {
                 e.preventDefault()
-                
 
                 if(cardLink===null){
-                    console.log('Id de l\'article est null et donc invalide')
+                    $errors = 'Id de l\'article est null et donc invalide'
                 } else {
                     const articleId = cardLink.getAttribute('data-id')
                     //console.log('En attente de la moddal :', articleId)
@@ -154,6 +152,8 @@ export const refreshBraceletCard = async (page, search) => {
 export const refreshEarringCard = async (page, search) => {
     const sectionEarringArticles = document.querySelector('#boucles')
     const data = await getEarringsArticles(page, search)
+    //console.log('data :', data)
+    
     
     let cardContent = []
 
@@ -299,9 +299,9 @@ export const getArticleModal = async (categoryNumber, articleId) => {
     const categoryName = getCategoryName(categoryNumber)
     
     
-    //console.log('articleID :', articleId, 'categoryNumber :', categoryNumber)
-    const data = await getArticleById(categoryName, articleId)
-    //console.log('actualArticle :', data.results[0])
+    console.log('articleID :', articleId, 'categoryNumber :', categoryNumber, 'categoryName :', categoryName)
+    const data = await getArticleById(articleId)
+    console.log('actualArticle :', data)
     
     modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
 
@@ -317,6 +317,7 @@ export const getArticleModal = async (categoryNumber, articleId) => {
                                 <p>${data.results[0].stock === 0 ? 'Rupture de stock' : data.results[0].stock + ' en stock'} <i class="fa-solid fa-boxes-stacked"></i></p>
                             </div>
                         </div>`
+
     modalElement.querySelector('.modal-footer').innerHTML = `
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                         ${data.results[0].stock === 0 ? '' : 

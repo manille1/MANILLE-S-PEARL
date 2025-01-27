@@ -55,10 +55,10 @@
                 case 'bracelets':
                     await refreshBraceletCard(currentPage, search)
                     break;
-                case 'boucle':
+                case 'boucles':
                     await refreshEarringCard(currentPage, search)
                     break;
-                case 'bague':
+                case 'bagues':
                     await refreshRingCard(currentPage, search)
                     break;
             }
