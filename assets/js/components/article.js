@@ -4,6 +4,8 @@ import { getCategoryName } from "./shared/getCategoryName.js";
 
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
+    console.log('avant getArticles');
+    
     const data = await getArticles(page, search)
     console.log('data :', data);
     

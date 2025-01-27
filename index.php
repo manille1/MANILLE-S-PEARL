@@ -10,7 +10,6 @@
         exit();
     }
 
-
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
         
@@ -31,7 +30,6 @@
                 : null;
 
             if (!empty($_SESSION['auth'])) {
-                require "_partials/navbar.php";
                 header("Location: index.php?component=gestion");
     
                 if(file_exists("controller/$componentName.php")){
@@ -46,7 +44,6 @@
                 require "Controller/login.php";
                 
             } elseif (empty($_SESSION) && file_exists("controller/$componentName.php")) {
-                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
     
             } else {
