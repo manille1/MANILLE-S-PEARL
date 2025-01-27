@@ -1,10 +1,12 @@
-import { getNecklaceArticles, getBraceletArticles, getEarringsArticles, getRingArticles, getArticleById } from "../services/specificCategory.js";
+import { getArticles, getArticleById } from "../services/specificCategory.js";
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
-export const refreshNecklaceCard = async (page, search) => {
-    const sectionNecklaceArticles = document.querySelector('#colliers')
-    const data = await getNecklaceArticles(page, search)
+export const refreshArticlesCard = async (category, page, search) => {
+    const sectionArticles = document.querySelector('.articles')
+    const categoryName = getCategoryName(category)
+    const data = await getArticles(category, page, search)
+    console.log(data);
     
     
     let cardContent = []
@@ -13,31 +15,31 @@ export const refreshNecklaceCard = async (page, search) => {
             showToast('Aucun résultat trouvé :/', 'bg-danger')
     
     } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
-           cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
-                                    <div class="text">
-                                        <p class="small">Collier</p>
-                                        <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
-                                        <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
-                                        <div class="info">
-                                            <p>${data.results[0].price} €</p>
-                                            <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                            <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                        </div>
-                                    </div>
-                            </div>`)
-    
-            sectionNecklaceArticles.innerHTML =cardContent.join('')
-            
-            const articleId = data.results[0].id
-            await getArticleModal(1, articleId)
-    
+        cardContent.push(`<div class="card">
+                             <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                                 <div class="text">
+                                     <p class="small">${categoryName}</p>
+                                     <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
+                                     <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
+                                     <div class="info">
+                                         <p>${data.results[0].price} €</p>
+                                         <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                         <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                     </div>
+                                 </div>
+                         </div>`)
+ 
+        sectionArticles.innerHTML = cardContent.join('')
+         
+        const articleId = data.results[0].id
+        await getArticleModal(category, articleId)
+ 
     } else {
         for(let i = 0; i < data.results.length; i++){
             cardContent.push(`<div class="card">
                                 <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                                 <div class="text">
-                                    <p class="small">Collier</p>
+                                    <p class="small">${categoryName}</p>
                                     <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
                                     <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
                                     <div class="info">
@@ -49,7 +51,7 @@ export const refreshNecklaceCard = async (page, search) => {
                             </div>`)
         }
 
-        sectionNecklaceArticles.innerHTML = cardContent.join('');
+        sectionArticles.innerHTML = cardContent.join('');
         
         if(data.count > 15){
             document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
@@ -75,222 +77,6 @@ export const refreshNecklaceCard = async (page, search) => {
     }
 }
 
-export const refreshBraceletCard = async (page, search) => {
-    const sectionBraceletArticles = document.querySelector('#bracelets')
-    const data = await getBraceletArticles(page, search)
-    
-    let cardContent = []
-
-    if (data.error === "No resource with given identifier found") {
-            showToast('Aucun résultat trouvé :/', 'bg-danger')
-    
-    } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
-            cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
-                                    <div class="text">
-                                        <p class="small">Bracelet</p>
-                                        <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
-                                        <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
-                                        <div class="info">
-                                            <p>${data.results[0].price} €</p>
-                                            <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                            <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                        </div>
-                                    </div>
-                            </div>`)
-    
-            
-            sectionBraceletArticles.innerHTML = cardContent.join('')
-            
-            const articleId = data.results[0].id
-            await getArticleModal(2, articleId)
-    
-        } else {
-            for(let i = 0; i < data.results.length; i++){
-                cardContent.push(`<div class="card">
-                                    <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                                    <div class="text">
-                                        <p class="small">Bracelet</p>
-                                        <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
-                                        <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                        <div class="info">
-                                            <p>${data.results[i].price} €</p>
-                                            <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                            <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                        </div>
-                                    </div>
-                                </div>`)
-            }
-
-            sectionBraceletArticles.innerHTML = cardContent.join('');
-            
-            if(data.count > 15){
-                document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-                handlePagination(page, search)
-            }
-
-
-            const cardClick = document.querySelectorAll('.card-click')
-            
-            cardClick.forEach(cardLink => {
-                cardLink.addEventListener('click', async (e) => {
-                    e.preventDefault()
-            
-                    if(cardLink===null){
-                        console.log('Id de l\'article est null et donc invalide')
-                    } else {
-                        const articleId = cardLink.getAttribute('data-id')
-                        await getArticleModal(2, articleId)
-                                    
-                    }
-                })
-            })
-    }
-}
-
-export const refreshEarringCard = async (page, search) => {
-    const sectionEarringArticles = document.querySelector('#boucles')
-    const data = await getEarringsArticles(page, search)
-    //console.log('data :', data)
-    
-    
-    let cardContent = []
-
-    if (data.error === "No resource with given identifier found") {
-            showToast('Aucun résultat trouvé :/', 'bg-danger')
-    
-    } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
-           cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
-                                    <div class="text">
-                                        <p class="small">Boucles d'oreilles</p>
-                                        <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
-                                        <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
-                                        <div class="info">
-                                            <p>${data.results[0].price} €</p>
-                                            <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                            <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                        </div>
-                                    </div>
-                            </div>`)
-    
-            sectionEarringArticles.innerHTML =cardContent.join('')
-            
-            const articleId = data.results[0].id
-            await getArticleModal(4, articleId)
-    
-    } else {
-        for(let i = 0; i < data.results.length; i++){
-            cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                                <div class="text">
-                                    <p class="small">Boucles d'oreille</p>
-                                    <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
-                                    <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                    <div class="info">
-                                        <p>${data.results[i].price} €</p>
-                                        <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                        <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                    </div>
-                                </div>
-                            </div>`)
-        }
-
-        sectionEarringArticles.innerHTML = cardContent.join('');
-        
-        if(data.count > 15){
-            document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-            handlePagination(page, search)
-        }
-
-        const cardClick = document.querySelectorAll('.card-click')
-        
-        cardClick.forEach(cardLink => {
-            cardLink.addEventListener('click', async (e) => {
-                e.preventDefault()
-        
-                if(cardLink===null){
-                    console.log('Id de l\'article est null et donc invalide')
-                } else {
-                    const articleId = cardLink.getAttribute('data-id')
-                    await getArticleModal(4, articleId)
-                                
-                }
-            })
-        })
-    }
-}
-
-export const refreshRingCard = async (page, search) => {
-    const sectionRingArticles = document.querySelector('#bagues')
-    const data = await getRingArticles(page, search)
-    
-    let cardContent = []
-
-    if (data.error === "No resource with given identifier found") {
-            showToast('Aucun résultat trouvé :/', 'bg-danger')
-    
-    } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
-           cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
-                                    <div class="text">
-                                        <p class="small">Bagues</p>
-                                        <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
-                                        <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
-                                        <div class="info">
-                                            <p>${data.results[0].price} €</p>
-                                            <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                            <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                        </div>
-                                    </div>
-                            </div>`)
-    
-            sectionRingArticles.innerHTML =cardContent.join('')
-            
-            const articleId = data.results[0].id
-            await getArticleModal(3, articleId)
-    
-    } else {
-        for(let i = 0; i < data.results.length; i++){
-            cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                                <div class="text">
-                                    <p class="small">Bague</p>
-                                    <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
-                                    <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                    <div class="info">
-                                        <p>${data.results[i].price} €</p>
-                                        <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                        <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                    </div>
-                                </div>
-                            </div>`)
-        }
-
-        sectionRingArticles.innerHTML = cardContent.join('');
-        
-        if(data.count > 15){
-            document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-            handlePagination(page, search)
-        }
-
-        const cardClick = document.querySelectorAll('.card-click')
-        
-        cardClick.forEach(cardLink => {
-            cardLink.addEventListener('click', async (e) => {
-                e.preventDefault()
-        
-                if(cardLink===null){
-                    console.log('Id de l\'article est null et donc invalide')
-                } else {
-                    const articleId = cardLink.getAttribute('data-id')
-                    await getArticleModal(3, articleId)
-                                
-                }
-            })
-        })
-    }
-}
 
 export const getArticleModal = async (categoryNumber, articleId) => {
     const modalElement = document.querySelector('#staticBackdrop')

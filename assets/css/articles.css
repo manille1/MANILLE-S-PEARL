@@ -1,4 +1,4 @@
-#fond_colliers{
+#fond_1{
     background: url(../../IMG/fond_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
@@ -9,7 +9,7 @@
     width: 100%;
 }
 
-#fond_bracelets{
+#fond_2{
     background: url(../../IMG/bracelet_or.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
@@ -20,7 +20,7 @@
     width: 100%;
 }
 
-#fond_boucles{
+#fond_4{
     background: url(../../IMG/boucles_soleil.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
@@ -31,7 +31,7 @@
     width: 100%;
 }
 
-#fond_bagues{
+#fond_3{
     background: url(../../IMG/bague_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;

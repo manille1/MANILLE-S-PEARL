@@ -18,10 +18,10 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Voir les catégories</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=colliers">Colliers</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=bracelets">Bracelets</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=bagues">Bagues</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=boucles">Boucles d'oreilles</a></li>
+                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=1">Colliers</a></li>
+                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=2">Bracelets</a></li>
+                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=3">Bagues</a></li>
+                    <li><a class="dropdown-item" href="index.php?component=specificCategory&category=4">Boucles d'oreilles</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Panier</a></li>
                 </ul>

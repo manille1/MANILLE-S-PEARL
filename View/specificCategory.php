@@ -1,15 +1,15 @@
 <div id="fond_<?php echo $_GET['category']; ?>">
     <?php switch ($_GET['category']) {
-        case 'colliers' : ?>
+        case '1' : ?>
             <div class="title">Tous nos colliers</div>
             <?php break;
-        case 'bracelets' : ?>
+        case '2' : ?>
             <div class="title">Tous nos bracelets</div>
             <?php break;
-        case 'boucles' : ?>
+        case '4' : ?>
             <div class="title">Toutes nos boucles d'oreilles</div>
             <?php break;
-        case 'bagues' : ?>
+        case '3' : ?>
             <div class="title">Toutes nos bagues</div>
             <?php break;
     } ?>
@@ -27,41 +27,24 @@
 <script src="./assets/js/services/specificCategory.js" type="module"></script>
 <script src="./assets/js/components/specificCategory.js" type="module"></script>
 <script type ="module">
-    import { refreshNecklaceCard, refreshBraceletCard, refreshEarringCard, refreshRingCard, getArticleModal } from "./assets/js/components/specificCategory.js";
+    import { refreshArticlesCard, getArticleModal } from "./assets/js/components/specificCategory.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
         const searchInput = document.querySelector('#search')
         const searchBtn = document.querySelector('#search-btn')
 
-        let currentPage = 1
         let category = document.querySelector('section').id
+        let currentPage = 1
         let search = searchInput.value
 
         
-        await refreshList(category, currentPage, search)  
+        await refreshArticlesCard(category, currentPage, search)  
 
         searchBtn.addEventListener('click', async() => {
             search = searchInput.value
-            await refreshList(category, currentPage, search)
+            await refreshArticlesCard(category, currentPage, search)
             
         })  
     })
 
-
-    const refreshList = async(category, currentPage, search) =>{
-        switch (category) {
-                case 'colliers':
-                    await refreshNecklaceCard(currentPage, search)
-                    break;
-                case 'bracelets':
-                    await refreshBraceletCard(currentPage, search)
-                    break;
-                case 'boucles':
-                    await refreshEarringCard(currentPage, search)
-                    break;
-                case 'bagues':
-                    await refreshRingCard(currentPage, search)
-                    break;
-            }
-    }
 </script>
