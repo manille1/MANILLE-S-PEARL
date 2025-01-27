@@ -41,6 +41,7 @@
                     case 'bracelets':
                         [$bracelets, $count] = getAllBracelets($pdo, ITEM_PER_PAGE, $search, $page);
                     
+                        
                         if (empty($bracelets)) {
                             http_response_code(404);
                             echo json_encode(['error' => 'No resource ring with given identifier found']);

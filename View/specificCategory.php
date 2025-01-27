@@ -38,12 +38,13 @@
         let search = searchInput.value
 
         
-        refreshList(category, currentPage, search)
+        await refreshList(category, currentPage, search)  
 
         searchBtn.addEventListener('click', async() => {
             search = searchInput.value
-            refreshList(category, currentPage, search)
-        })
+            await refreshList(category, currentPage, search)
+            
+        })  
     })
 
 

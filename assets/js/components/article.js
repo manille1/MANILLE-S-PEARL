@@ -62,7 +62,6 @@ export const refreshList = async (page, search) => {
         handlePagination(page, search)
 
 
-        // Ajout des écouteurs sur les éléments "card-click"
         const cardClick = document.querySelectorAll('.card-click')
 
         cardClick.forEach(cardLink => {
