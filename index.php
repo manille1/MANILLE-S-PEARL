@@ -58,7 +58,6 @@
     }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <!--data-bs-theme="dark"-->
@@ -79,6 +78,7 @@
             }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/home.css">
@@ -91,6 +91,14 @@
             $componentName = !empty($_GET['component'])
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
+
+            $specificCategory = !empty($_GET['category'])
+            ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
+            : null;
+
+            $searchContent = !empty($_GET['search'])
+            ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8')
+            : null;
 
             $specificCategory = !empty($_GET['category'])
             ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
@@ -126,15 +134,16 @@
                     
             } elseif(empty($_SESSION) && file_exists("controller/$componentName.php")){
                 require "_partials/navbar.php";
+                require "_partials/navbar.php";
                 require "Controller/$componentName.php";
 
             } else {
                 require "Controller/home.php";
                 throw new Exception("Component '$componentName' does not exist");
             }
-           
-        //require "_partials/modal.html";
-        //require "_partials/toast.html";
+            
+        require "_partials/modal.php";
+        require "_partials/toast.html";
         ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

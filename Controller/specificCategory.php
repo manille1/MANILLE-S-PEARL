@@ -1,16 +1,13 @@
 <?php
-    require "Model/articles.php";
-
-    // var_dump('On est au début du controller 👍');
-    const LIST_ARTICLES_ITEMS_PER_PAGE = 15;
-
+    require "Model/specificCategory.php";
+    const ITEM_PER_PAGE = 15;
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
 
         header('Content-Type: application/json');
 
-        try{             
+        try {
             if(isset($_GET['id'])){
                 $article = getArticle($pdo, $_GET['id']);
         
@@ -27,27 +24,31 @@
             } else {
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
+                $category = $_GET['category'];
 
-                [$articles, $count] = getAllArticles($pdo, LIST_ARTICLES_ITEMS_PER_PAGE, $search, $page);
-                
+
+                [$articles, $count] = getAllArticlesByCategory($pdo, ITEM_PER_PAGE
+                                                                , $category, $search, $page);
+                    
                 if (empty($articles)) {
                     http_response_code(404);
-                    echo json_encode(['error' => 'No resource with given identifier found']);
-
+                    echo json_encode(['error' => 'No resource ring with given identifier found']);
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $articles, 'count' => $count]);
-
                 }
-            } 
+
+            }
+            
 
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'Internal Server Error']);
         }
         
-        exit;
-    }
+        exit();
 
-    require "View/articles.php";
+    }
+    
+    require "View/specificCategory.php";
 ?>

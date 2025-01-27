@@ -1,12 +1,9 @@
 <?php
-    function getAllArticles (PDO $pdo, int $itemPerPage, string $search, int $page = 1){ 
-        $offset = ($page - 1) * $itemPerPage;
+    function getAllArticlesByCategory (PDO $pdo, int $itemPerPage, int $category, string $search, int $page){
+        $offset = (($page - 1) * $itemPerPage);
+        $searchPart = !empty($search)? 'AND article.name LIKE :search' : '';
 
-        $searchPart = !empty($search)? 'WHERE article.name LIKE :search' : '';
-
-        $query = "SELECT * FROM article $searchPart ORDER BY article.name ASC LIMIT $itemPerPage OFFSET $offset";
-        //var_dump($query);
-
+        $query = "SELECT * FROM article WHERE category=$category $searchPart ORDER BY article.name ASC LIMIT $itemPerPage OFFSET $offset";
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
@@ -23,29 +20,30 @@
         $prep->closeCursor();
 
 
-        $query="SELECT COUNT(*) AS total  FROM article $searchPart";
+        $query = "SELECT COUNT(*) AS total FROM article INNER JOIN category ON article.category=category.id
+                WHERE category.id=$category $searchPart";
+
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
             $prep->bindValue(':search', '%' . $search . '%');
         }
 
-        try
-        {
+        try {
             $prep->execute();
-        }
-        catch (PDOException $e)
-        {
-            return " erreur : ".$e->getCode() .' :</b> '. $e->getMessage();
+        } catch (PDOException $e) {
+            return $e->getCode() . '</br>' . $e->getMessage();
         }
 
         $count = $prep->fetch(PDO::FETCH_ASSOC);
         $prep->closeCursor();
 
+        
         return [$res, $count];
     }
 
     function getArticle (PDO $pdo, int $id){
-        $query="SELECT * FROM article WHERE $id = article.id;";
+        $query="SELECT * FROM article WHERE article.id=$id;";
         $prep = $pdo->prepare($query);
         try{
             $prep->execute();
@@ -55,7 +53,6 @@
         
         $res = $prep->fetchAll(PDO::FETCH_ASSOC);
         $prep->closeCursor();
-
 
         return $res;
     }

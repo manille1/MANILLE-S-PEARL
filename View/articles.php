@@ -11,11 +11,22 @@
 <script src="./assets/js/services/article.js" type="module"></script>
 <script src="./assets/js/components/article.js" type="module"></script>
 <script type ="module">
-    import { refreshList } from "./assets/js/components/article.js";
+    import { refreshList, getArticleModal } from "./assets/js/components/article.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
-        let currentPage = 1
+      const searchInput = document.querySelector('#search')
+      const searchBtn = document.querySelector('#search-btn')
 
-        refreshList(currentPage)
+      let currentPage = 1
+      let search = searchInput.value
+      
+      
+      await refreshList(currentPage, search)  
+
+      searchBtn.addEventListener('click', async() => {
+        search = searchInput.value
+        await refreshList(currentPage, search)
+        
+      })     
     })
 </script>
