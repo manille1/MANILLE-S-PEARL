@@ -84,3 +84,7 @@ h1{
     border-radius: 8px;
     border-width: 1px;
 }
+
+.center{
+    text-align: center;
+}

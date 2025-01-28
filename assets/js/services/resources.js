@@ -1,6 +1,6 @@
-export const getArticles = async (currentPage = 1, search) => {
+export const getResources = async (resourcesType, currentPage = 1, search) => {
     try {
-        const response = await fetch(`index.php?component=resources&resources=crud-articles&page=${currentPage}&search=${search}`, {
+        const response = await fetch(`index.php?component=resources&resources=${resourcesType}&page=${currentPage}&search=${search}`, {
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -14,9 +14,9 @@ export const getArticles = async (currentPage = 1, search) => {
     }
 }
 
-export const getArticleById = async (articleId) => {
+export const getResourcesById = async (resourcesType, articleId) => {
     try {
-        const response = await fetch(`index.php?component=resources&id=${articleId}`, {
+        const response = await fetch(`index.php?component=resources&resources=${resourcesType}&id=${articleId}`, {
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -26,6 +26,16 @@ export const getArticleById = async (articleId) => {
         return await response.json();
 
     } catch (error) {
-        throw error;
+        return { error: error.message };
     }
+}
+
+export const toggleEnabledUser = async (resourcesType, id) => {
+    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=toggle_enabled&id=${id}`,{
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+
+    return await response.json()
 }

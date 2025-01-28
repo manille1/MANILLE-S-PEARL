@@ -11,25 +11,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="index.php?component=articles">Voir tout les articles</a>
+                <a class="nav-link" href="index.php?<?php echo !empty($_SESSION['auth']) ? 
+                'component=resources&resources=article' : 'component=articles';?>">
+                        Voir tout les articles
+                </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Voir les catégories</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="index.php?component=colliers">Colliers</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=bracelets">Bracelets</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=bagues">Bagues</a></li>
-                    <li><a class="dropdown-item" href="index.php?component=boucles">Boucles d'oreilles</a></li>
-                    <?php if (empty($_SESSION)) { ?>
+                <?php if(!empty($_SESSION['auth'])){ ?>
+                    <a class="nav-link" href="index.php?component=resources&resources=category">
+                        Voir les catégories
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Voir les catégories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="index.php?component=1">Colliers</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=2">Bracelets</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=3">Bagues</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=4">Boucles d'oreilles</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="index.php?component=cart">Panier</a></li>
-                    <?php }; ?>
-                </ul>
+                    </ul>
+                <?php }; ?>
             </li>
             <?php if(!empty($_SESSION['auth'])){ ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?component=users">Voir tout les utilisateurs</a>
+                    <a class="nav-link" href="index.php?component=resources&resources=user">Voir tout les utilisateurs</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link bs-danger-text-emphasis" href="index.php?deconnect">Deconnexion</a>

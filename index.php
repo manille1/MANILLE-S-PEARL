@@ -20,7 +20,7 @@
 
             $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
                 ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
-                : 'crud-articles';
+                : 'articles';
 
             $specificCategory = !empty($_GET['category'])
                 ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
@@ -35,7 +35,6 @@
                 : null;
 
             if (!empty($_SESSION['auth'])) {
-                //header(header: "Location: index.php?component=gestion");
     
                 if(file_exists("controller/$componentName.php")){
                     require "Controller/$componentName.php";
@@ -97,7 +96,7 @@
 
             $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
             ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
-            : 'crud-articles';
+            : 'articles';
 
             $specificCategory = !empty($_GET['category'])
             ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
