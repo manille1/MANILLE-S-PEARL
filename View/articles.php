@@ -11,7 +11,7 @@
 <script src="./assets/js/services/article.js" type="module"></script>
 <script src="./assets/js/components/article.js" type="module"></script>
 <script type ="module">
-    import { refreshList, getArticleModal } from "./assets/js/components/article.js";
+    import { refreshList} from "./assets/js/components/article.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
       const searchInput = document.querySelector('#search')
