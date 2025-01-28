@@ -28,9 +28,7 @@
       let currentPage = 1
       let search = searchInput.value
       
-      console.log('avant refreshList');
-      
-      await refreshList(currentPage, search)  
+      await refreshList(currentPage, search)
 
       searchBtn.addEventListener('click', async() => {
         search = searchInput.value

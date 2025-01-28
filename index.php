@@ -35,7 +35,7 @@
                 : null;
 
             if (!empty($_SESSION['auth'])) {
-                header("Location: index.php?component=gestion");
+                //header(header: "Location: index.php?component=gestion");
     
                 if(file_exists("controller/$componentName.php")){
                     require "Controller/$componentName.php";
@@ -114,8 +114,9 @@
 
             if (!empty($_SESSION['auth'])) {
                 if (!isset($_GET['component']) || $_GET['component'] == 'gestionmarketingadmin'){
-                    header("Location: index.php?component=gestion");
+                    $componentName = 'gestion';
                 }
+
     
                 if(file_exists("Controller/$componentName.php")){
                 require "_partials/navbar.php";
@@ -124,7 +125,6 @@
                     require "Controller/login.php";
                     throw new Exception("Component '$componentName' does not exist, sorry !");
                 }
-                exit;
     
             } elseif ($componentName === 'gestionmarketingadmin'){
                 require "Controller/login.php";

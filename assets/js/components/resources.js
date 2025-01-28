@@ -5,7 +5,7 @@ import { getCategoryName } from "./shared/getCategoryName.js";
 export const refreshList = async (page, search) => {
     const tbodyElement = document.querySelector('tbody')
     console.log('page :', page, 'search :', search);
-    
+
     const data = await getArticles(page, search)
     console.log('data :', data);
     
@@ -22,7 +22,7 @@ export const refreshList = async (page, search) => {
             listContent.push(`<tr>
                                 <th scope="row">${data.results[i].id}</th>
                                 <td>${data.results[i].name}
-                                    <a href=# class="resource-click" data-id="${data.results[i].id}>
+                                    <a href=# class="resource-click" data-id="${data.results[i].id}">
                                         <i class="fa-solid fa-circle-info"></i>
                                     </a>
                                 </td>
@@ -35,6 +35,9 @@ export const refreshList = async (page, search) => {
 
         tbodyElement.innerHTML = listContent.join('')
 
+        console.log(data.count.total);
+        
+        console.log('pagination :', getPagination(data.count.total));
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
 
         handlePagination(page, search)

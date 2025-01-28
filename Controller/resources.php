@@ -7,7 +7,7 @@
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
         
-        var_dump('condition AJAX passer');
+        //var_dump('condition AJAX passer');
 
         header('Content-Type: application/json');
 
@@ -26,12 +26,13 @@
                 }
 
             } else {
-                var_dump('dans le else');
+                //var_dump('dans le else');
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
 
                 [$articles, $count] = getAllArticles($pdo, LIST_ARTICLES_ITEMS_PER_PAGE, $search, $page);
-                
+                //var_dump('après getAllArticles()');
+
                 if (empty($articles)) {
                     http_response_code(404);
                     echo json_encode(['error' => 'No resource with given identifier found, sorry !']);

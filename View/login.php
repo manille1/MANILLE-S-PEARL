@@ -1,4 +1,4 @@
-<h1>Page de Connexion</h1>
+<h1 class="login">Page de Connexion</h1>
 
 <div class="container vh-100 d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">

@@ -6,11 +6,11 @@ export const getArticles = async (currentPage = 1, search) => {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         });
-    
+        
         return await response.json();
 
     } catch (error) {
-        throw error;
+        return { error: error.message };
     }
 }
 

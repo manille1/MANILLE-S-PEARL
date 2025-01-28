@@ -1,11 +1,11 @@
 <?php
     function getAllArticles (PDO $pdo, int $itemPerPage, string $search, int $page = 1){
         $offset = ($page - 1) * $itemPerPage;
-
         $searchPart = !empty($search)? 'WHERE article.name LIKE :search' : '';
 
         $query = "SELECT * FROM article $searchPart ORDER BY article.name ASC LIMIT $itemPerPage OFFSET $offset";
 
+        
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
@@ -23,7 +23,7 @@
         $prep->closeCursor();
 
 
-        $query="SELECT COUNT(*) AS total  FROM article $searchPart";
+        $query="SELECT COUNT(*) AS total FROM article $searchPart";
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
             $prep->bindValue(':search', '%' . $search . '%');

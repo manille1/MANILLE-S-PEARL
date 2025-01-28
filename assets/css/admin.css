@@ -1,9 +1,16 @@
 h1{
-    margin: 1em 0;
+    margin-bottom: 1em;
+    padding-top: 1em;
     text-align: center;
     color: #152331;
     font-family: Limelight;
     font-size: 5.3em;
+}
+
+.login{
+    position: absolute;
+    right: 40vh;
+    top: -6vh;
 }
 
 #intro-admin{
