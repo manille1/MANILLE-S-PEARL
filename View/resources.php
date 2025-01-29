@@ -23,7 +23,7 @@
             <th scope="col">Nom</th>
           <?php } elseif ($_GET['resources'] === 'user' && $_SESSION['role'] === 1){ ?>
             <th scope="col" class="center">ID</th>
-            <th scope="col">Username</th>
+            <th id ="username" scope="col" class="<?php echo $_SESSION['username']; ?>">Username</th>
             <th scope="col">Rôle</th>
             <th scope="col"class="center">Actif</th>
           <?php } ?>
@@ -43,26 +43,26 @@
 <script src="./assets/js/services/resources.js" type="module"></script>
 <script src="./assets/js/components/resources.js" type="module"></script>
 <script type ="module">
-    import { refreshList, handleEnabledClick } from "./assets/js/components/resources.js";
+    import { refreshList } from "./assets/js/components/resources.js";
 
     document.addEventListener('DOMContentLoaded', async () => {
       const searchInput = document.querySelector('#search')
       const searchBtn = document.querySelector('#search-btn')
 
+      const user = document.querySelector('#username')
+      const actualUser = user ? user.getAttribute('class') : ''
       let currentPage = 1
       let search = searchInput.value
       let resourcesType = document.querySelector('table').id
       
       
-      await refreshList(resourcesType, currentPage, search)
+      await refreshList(resourcesType, currentPage, search, actualUser)
 
       searchBtn.addEventListener('click', async() => {
         search = searchInput.value
-        await refreshList(resourcesType, currentPage, search)
+        await refreshList(resourcesType, currentPage, search, actualUser)
         
-      })     
-
-      handleEnabledClick(resourcesType)
+      })
 
     })
 </script>

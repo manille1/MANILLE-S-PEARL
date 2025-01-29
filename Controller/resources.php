@@ -10,21 +10,21 @@
         header('Content-Type: application/json');
 
         try{             
-            // if(isset($_GET['id'])){
-            //     $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
-            //     $article = getResources($pdo, $resourcesType, $_GET['id']);
+            if(isset($_GET['id'])){
+                $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
+                $article = getResources($pdo, $resourcesType, $_GET['id']);
         
-            //     if (empty($article)) {
-            //         http_response_code(404);
-            //         echo json_encode(['error' => 'No resource for specic article with given identifier found']);
+                if (empty($article)) {
+                    http_response_code(404);
+                    echo json_encode(['error' => 'No resource for specic article with given identifier found']);
 
-            //     } else {
-            //         header('Content-Type: application/json');
-            //         echo json_encode(['results' => $article]);
+                } else {
+                    header('Content-Type: application/json');
+                    echo json_encode(['results' => $article]);
 
-            //     }
+                }
 
-            // } else {
+            } else {
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
                 $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
@@ -34,28 +34,28 @@
 
                 if (empty($resources)) {
                     http_response_code(404);
-                    echo json_encode(['error' => 'No resource with given identifier found, sorry !']);
+                    echo json_encode(['error' => 'No resource with given identifier found']);
 
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $resources, 'count' => $count]);
 
                 }
-            //} 
+            } 
 
             if ($actionName === 'toggle_enabled') {
                 $id = cleanString($_GET['id']);
-                var_dump($_GET['id']);
+                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
                 $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
-                $res = toggleEnabled($pdo, $resourcesType, $id);
+
+                $res = toggleEnabled($pdo, $resourcesType, $id, $search);
 
                 header('Content-Type: application/json');
 
-                if (is_bool($res)) {
-                        echo json_encode(['success' => true]);
-                    } else {
-                        echo json_encode(['error' => $res]);
-                    }
+                if (!is_bool($res)) {
+                    echo json_encode(['error' => $res]);
+                }
                 exit();
             }
 

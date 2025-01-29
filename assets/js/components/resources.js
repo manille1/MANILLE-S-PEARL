@@ -1,31 +1,32 @@
-import { getResourcesById, getResources, toggleEnabledUser} from "../services/resources.js";
+import { getResourcesById, getResources, toggleEnabledresources} from "../services/resources.js";
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
-export const refreshList = async (resourcesType, page, search) => {
+export const refreshList = async (resourcesType, page, search, actualUser) => {
     const tbodyElement = document.querySelector('tbody')
     const data = await getResources(resourcesType, page, search)
-    console.log('data :', data);
+    //console.log('data :', data);
     
 
     let listContent = []
     
     if (data.error === "No resource with given identifier found") {
-        console.log('on a une erreur ...');
         showToast('Aucun résultat trouvé :/', 'bg-danger')
         
 
     } else {
+        
         for(let i = 0; i < data.results.length; i++){
-            listContent.push(getlistContentByType(resourcesType, data.results[i]))
+            listContent.push( getlistContentByType(resourcesType, data.results[i], actualUser) )
         }
         
         tbodyElement.innerHTML = listContent.join('')
         
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
-
-        handlePagination(page, search)
-
+        
+        
+        handlePagination(page, resourcesType, search, actualUser)
+        await handleEnabledClick(resourcesType, page, search)
 
         const resourceClick = document.querySelectorAll('.resource-click')
 
@@ -89,33 +90,35 @@ const getPagination = (total) => {
     return paginationButton.join('')
 }
 
-const handlePagination = (page, search) => {
+const handlePagination = (page, resourcesType, search, actualUser) => {
     const previousLink = document.querySelector('#previous-link')
     const nextLink = document.querySelector('#next-link')
     const paginationBtns = document.querySelectorAll('.pagination-btn')
+    
 
     previousLink.addEventListener('click', async () => {
         if (page > 1 ){
             page--
-            await refreshList(resourcesType, page, search)
+            await refreshList(resourcesType, page, search, actualUser)
         }
     })
 
     for (let i = 0; i < paginationBtns.length; i++){
         paginationBtns[i].addEventListener('click', async (e) => {
             const pageNumber = e.target.getAttribute('data-page')
-            await refreshList(resourcesType, pageNumber, search)
+            await refreshList(resourcesType, pageNumber, search, actualUser)
         })
     }
 
     nextLink.addEventListener('click', async () => {
         page++
-        await refreshList(resourcesType, page, search)
+        await refreshList(resourcesType, page, search, actualUser)
     })
 }
 
-const getlistContentByType = (resourcesType, i) => {
+const getlistContentByType = (resourcesType, i, actualUser) => {
     const listContentByType = []
+
     if (resourcesType === 'article') {
         const categoryName = getCategoryName(i.category)
         listContentByType.push(`<tr>
@@ -129,10 +132,10 @@ const getlistContentByType = (resourcesType, i) => {
                             <td>${i.price}</td>
                             <td>${i.stock}</td>
                             <td class="center">
-                                <a href="#">
+                                <a href="#"class="enabled-icon-a" data-id="${i.id}">
                                     ${i.enabled === 1 ? 
-                                        `<i class="fa-solid fa-square-check enabled-icon text-success" data-id"${i.id}"></i>` 
-                                        : `<i class="fa-solid fa-square-xmark enabled-icon text-danger" data-id"${i.id}"></i>`}
+                                        `<i class="fa-solid fa-square-check text-success"></i>` 
+                                        : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
                                 </a>
                             </td>
                         </tr>`)
@@ -154,31 +157,36 @@ const getlistContentByType = (resourcesType, i) => {
                                 </a>
                             </td>
                             <td>${i.role === 1 ? 'admin <i class="fa-solid fa-user-tie"></i>' : 'user <i class="fa-solid fa-user"></i>'}</td>
-                            <td class="center">
-                                <a href="#">
-                                    ${i.enabled === 1 ? 
-                                        `<i class="fa-solid fa-square-check enabled-icon text-danger" data-id"${i.id}"></i>` 
-                                        : `<i class="fa-solid fa-square-xmark enabled-icon text-success" data-id"${i.id}"></i>`}
-                                </a>
-                            </td>
+                            ${i.username !== actualUser ? 
+                                `<td class="center">
+                                    <a href="#" class="enabled-icon-a" data-id="${i.id}">
+                                        ${i.enabled === 1 ? 
+                                            `<i class="fa-solid fa-square-check text-success"></i>` 
+                                            : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
+                                    </a>
+                                </td>` 
+                                : `<td class="center"> 
+                                    <i class="fa-solid fa-square-check" style="color: #75b798;"></i>
+                                </td>`}
                         </tr>`)
     }
 
     return listContentByType.join('');
 }
 
-export const handleEnabledClick = (resourcesType) => {
-    const enabledIcons = document.querySelectorAll(".enabled-icon")
-    console.log(enabledIcons)
-
+const handleEnabledClick = async (resourcesType, currentPage, search) => {
+    const enabledIcons = document.querySelectorAll(".enabled-icon-a")
+    //console.log(enabledIcons);
+    
     enabledIcons.forEach(enabledIcon => {
         enabledIcon.addEventListener('click', async (e) => {
-            const userId = e.target.getAttribute('data-id')
-            console.log(userId)
+            const resourcesId = e.target.closest('.enabled-icon-a').getAttribute('data-id')
             
-            const result = await toggleEnabledUser(resourcesType, userId)
-
-            if (result.hasOwnProperty('success')) {
+            const result = await toggleEnabledresources(resourcesType, resourcesId, currentPage, search)
+            
+            if (result.hasOwnProperty('error')) {
+                showToast(result.error, 'bg-danger')
+            } else {
                 if (e.target.classList.contains('fa-square-check')) {
                     e.target.classList.remove('fa-square-check', 'text-success')
                     e.target.classList.add('fa-square-xmark', 'text-danger')
@@ -186,9 +194,7 @@ export const handleEnabledClick = (resourcesType) => {
                     e.target.classList.add('fa-square-check', 'text-success')
                     e.target.classList.remove('fa-square-xmark', 'text-danger')
                 }
-                showToast('Le satut de l\'utilisateur a été modifé avec succès', 'bg-success')
-            } else {
-                showToast(result.error, 'bg-danger')
+                showToast('Le statut a été modifé avec succès', 'bg-success')
             }
         })
     })

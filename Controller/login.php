@@ -24,7 +24,6 @@
                 $_SESSION["role"] = $connexion['role'] === 1 ? 1 : 2;
                 header("Content-Type: application/json");
                 
-                echo json_encode(['authentication' => true]);
                 exit();
             }
         }

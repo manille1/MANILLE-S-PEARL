@@ -30,12 +30,17 @@ export const getResourcesById = async (resourcesType, articleId) => {
     }
 }
 
-export const toggleEnabledUser = async (resourcesType, id) => {
-    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=toggle_enabled&id=${id}`,{
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
+export const toggleEnabledresources = async (resourcesType, id, currentPage, search) => {
+    try {
+        const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=toggle_enabled&id=${id}&page=${currentPage}&search=${search}`,{
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
 
-    return await response.json()
+        return await response.json()
+
+    } catch (error) {
+        return { error: error.message };
+    }
 }
