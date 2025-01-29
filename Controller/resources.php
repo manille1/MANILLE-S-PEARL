@@ -12,7 +12,7 @@
         try{             
             if(isset($_GET['id'])){
                 $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
-                $article = getResources($pdo, $resourcesType, $_GET['id']);
+                $article = getResource($pdo, $resourcesType, $_GET['id']);
         
                 if (empty($article)) {
                     http_response_code(404);
@@ -21,14 +21,12 @@
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $article]);
-
                 }
 
             } else {
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $search = isset($_GET['search']) ? cleanString($_GET['search']) : '';
                 $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
-
 
                 [$resources, $count] = getAllResources($pdo, LIST_ARTICLES_ITEMS_PER_PAGE, $resourcesType, $search, $page);
 
@@ -39,7 +37,6 @@
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(['results' => $resources, 'count' => $count]);
-
                 }
             } 
 
@@ -64,6 +61,18 @@
             echo json_encode(['error' => 'Internal Server Error']);
         }
         
+        exit();
+    }
+
+    if ($actionName === 'delete') {
+        $id = cleanString($_GET['id']);
+        $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
+
+        $res = deleteResources($pdo, $resourcesType, $id);
+        if (!is_bool($res)) {
+            return ['error' => $res];
+        }
+
         exit();
     }
 

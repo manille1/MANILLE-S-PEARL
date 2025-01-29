@@ -1,4 +1,4 @@
-import { getResourcesById, getResources, toggleEnabledresources} from "../services/resources.js";
+import { getResourcesById, getResources, toggleEnabledResources } from "../services/resources.js";
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
@@ -6,16 +6,13 @@ export const refreshList = async (resourcesType, page, search, actualUser) => {
     const tbodyElement = document.querySelector('tbody')
     const data = await getResources(resourcesType, page, search)
     //console.log('data :', data);
-    
 
     let listContent = []
     
     if (data.error === "No resource with given identifier found") {
         showToast('Aucun résultat trouvé :/', 'bg-danger')
-        
 
     } else {
-        
         for(let i = 0; i < data.results.length; i++){
             listContent.push( getlistContentByType(resourcesType, data.results[i], actualUser) )
         }
@@ -24,12 +21,13 @@ export const refreshList = async (resourcesType, page, search, actualUser) => {
         
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
         
-        
+
         handlePagination(page, resourcesType, search, actualUser)
+        //placé ici les crud
         await handleEnabledClick(resourcesType, page, search)
 
-        const resourceClick = document.querySelectorAll('.resource-click')
 
+        const resourceClick = document.querySelectorAll('.resource-click')
         resourceClick.forEach(resourceLink => {
             resourceLink.addEventListener('click', async (e) => {
                 e.preventDefault()
@@ -50,9 +48,8 @@ const getResourcesModal = async (resourcesType, articleId) => {
     const modalElement = document.querySelector('#staticBackdrop')
     const modal = new bootstrap.Modal(modalElement)
     const data = await getResourcesById(resourcesType, articleId)
-    console.log('actualArticle :', data)
     
-    
+
     modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
 
     const categoryName = getCategoryName(data.results[0].category)
@@ -123,11 +120,8 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
         const categoryName = getCategoryName(i.category)
         listContentByType.push(`<tr>
                             <th scope="row" class="center">${i.id}</th>
-                            <td>${i.name}
-                                <a href='#' class="resource-click" data-id="${i.id}">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </a>
-                            </td>
+                            <td>${i.name}<a href='#' class="resource-click" data-id="${i.id}">
+                                <i class="fa-solid fa-circle-info"></i></a></td>
                             <td>${categoryName}</td>
                             <td>${i.price}</td>
                             <td>${i.stock}</td>
@@ -138,6 +132,12 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
                                         : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
                                 </a>
                             </td>
+                            <td class="center">
+                                <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
+                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' class="modify">
+                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
+                            </td>
                         </tr>`)
     } else if (resourcesType === 'category') {
         listContentByType.push(`<tr>
@@ -146,6 +146,12 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
                                 <a href='#' class="resource-click" data-id="${i.id}">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </a>
+                            </td>
+                            <td class="center">
+                                <a href='index.php?component=resources&resources=category&action=delete&id=${i.id}' class="delete">
+                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                <a href='index.php?component=resources&resources=category&action=modify&id=${i.id}' class="modify">
+                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
                             </td>
                         </tr>`)
     } else if (resourcesType === 'user') {
@@ -165,9 +171,13 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
                                             : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
                                     </a>
                                 </td>` 
-                                : `<td class="center"> 
-                                    <i class="fa-solid fa-square-check" style="color: #75b798;"></i>
-                                </td>`}
+                                : `<td class="center"><i class="fa-solid fa-square-check" style="color: #75b798;"></i></td>`}
+                            <td class="center">
+                                <a href='index.php?component=resources&resources=user&action=delete&id=${i.id}' class="delete">
+                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                <a href='index.php?component=resources&resources=user&action=modify&id=${i.id}' class="modify">
+                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
+                            </td>
                         </tr>`)
     }
 
@@ -182,7 +192,7 @@ const handleEnabledClick = async (resourcesType, currentPage, search) => {
         enabledIcon.addEventListener('click', async (e) => {
             const resourcesId = e.target.closest('.enabled-icon-a').getAttribute('data-id')
             
-            const result = await toggleEnabledresources(resourcesType, resourcesId, currentPage, search)
+            const result = await toggleEnabledResources(resourcesType, resourcesId, currentPage, search)
             
             if (result.hasOwnProperty('error')) {
                 showToast(result.error, 'bg-danger')

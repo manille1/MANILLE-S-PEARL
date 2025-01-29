@@ -5,7 +5,6 @@
             $errors = "Erreur : table non autorisée ou non existante";
             return $errors;
         }
-        
         $searchPart = !empty($search)? "WHERE $resourcesType.name LIKE :search" : '';
         $offset = ($page - 1) * $itemPerPage;
 
@@ -14,12 +13,11 @@
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
-            $prep->bindValue(':search', '%' . $search . '%');
+            $prep->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
         }
 
         try {
             $prep->execute();
-
         } catch (PDOException $e) {
             return " erreur : ".$e->getCode() .' :</b> '. $e->getMessage();
         }
@@ -28,8 +26,7 @@
         $prep->closeCursor();
 
 
-
-        $query="SELECT COUNT(*) AS total FROM $resourcesType $searchPart";
+        $query = "SELECT COUNT(*) AS total FROM $resourcesType $searchPart";
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
             $prep->bindValue(':search', '%' . $search . '%');
@@ -48,7 +45,7 @@
         return [$res, $count];
     }
 
-    function getResources (PDO $pdo, string $resourcesType, int $id){
+    function getResource (PDO $pdo, string $resourcesType, int $id){
         $correctTable = ['article', 'category', 'user'];
         if (!in_array($resourcesType, $correctTable)) {
             $errors = "Erreur : table non autorisée ou non existante";
@@ -73,26 +70,44 @@
 
     function toggleEnabled (PDO $pdo, string $resourcesType, int $id, string $search): string | bool{
         $correctTable = ['article', 'category', 'user'];
-        if (in_array($resourcesType, $correctTable)) {
-
-            $searchPart = !empty($search)? "AND $resourcesType.name LIKE :search" : '';
-
-            $res = $pdo->prepare("UPDATE $resourcesType SET enabled = NOT enabled WHERE id = :id  $searchPart");
-            $res->bindParam(':id', $id, PDO::PARAM_INT);
-            if (!empty($searchPart)){
-                $res->bindValue(':search', '%' . $search . '%');
-            }
-            
-            try{
-                $res->execute();
-            } catch (PDOException $e) {
-                return " erreur : ".$e->getCode() .' '. $e->getMessage();
-            }
-
-            return true;
-        } else {
+        if (!in_array($resourcesType, $correctTable)) {
             $errors = "Erreur : table non autorisée ou non existante";
             return $errors;
         }
+
+        $searchPart = !empty($search)? "AND $resourcesType.name LIKE :search" : '';
+
+        $res = $pdo->prepare("UPDATE $resourcesType SET enabled = NOT enabled WHERE id = :id  $searchPart");
+        $res->bindParam(':id', $id, PDO::PARAM_INT);
+        if (!empty($searchPart)){
+            $res->bindValue(':search', '%' . $search . '%');
+        }
+            
+        try{
+            $res->execute();
+        } catch (PDOException $e) {
+            return " erreur : ".$e->getCode() .' '. $e->getMessage();
+        }
+
+        return true;
+    }
+
+    
+    function deleteResources (PDO $pdo, string $resourcesType, int $id): string | bool{
+        $correctTable = ['article', 'category', 'user'];
+        if (!in_array($resourcesType, $correctTable)) {
+            $errors = "Erreur : table non autorisée ou non existante";
+            return $errors;
+        }
+
+        $res = $pdo->prepare("DELETE FROM $resourcesType WHERE id = :id");
+        $res->bindParam(':id', $id, PDO::PARAM_INT);
+        try{
+            $res->execute();
+        } catch (PDOException $e) {
+            return " erreur : ".$e->getCode() .' '. $e->getMessage();
+        }
+
+        return true;
     }
 ?>

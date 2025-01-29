@@ -30,7 +30,7 @@ export const getResourcesById = async (resourcesType, articleId) => {
     }
 }
 
-export const toggleEnabledresources = async (resourcesType, id, currentPage, search) => {
+export const toggleEnabledResources = async (resourcesType, id, currentPage, search) => {
     try {
         const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=toggle_enabled&id=${id}&page=${currentPage}&search=${search}`,{
             headers: {

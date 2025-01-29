@@ -94,7 +94,7 @@
             ? htmlspecialchars($_GET['component'], ENT_QUOTES, 'UTF-8')
             : 'home';
 
-            $crudName = !empty($_GET['resources']) //resources pour optimiser tous les crud en 1
+            $crudName = !empty($_GET['resources'])
             ? htmlspecialchars($_GET['resources'], ENT_QUOTES, 'UTF-8')
             : 'articles';
 
@@ -138,7 +138,7 @@
                 throw new Exception("Component '$componentName' does not exist");
             }
            
-        //require "_partials/modal.html";
+        require "_partials/modal.php";
         require "_partials/toast.html";
         ?>
 

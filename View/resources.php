@@ -6,8 +6,6 @@
   <h1>CRUD user</h1>
 <?php } ?>
 
-
-
 <table id="<?php echo $_GET['resources']; ?>" class="table">
     <thead>
         <tr>
@@ -27,18 +25,19 @@
             <th scope="col">Rôle</th>
             <th scope="col"class="center">Actif</th>
           <?php } ?>
+          <th scope="col"class="center">Action</th>
         </tr>
     </thead>
     <tbody>
         
     </tbody>
 </table>
-
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     
   </ul>
 </nav>
+
 
 <script src="./assets/js/services/resources.js" type="module"></script>
 <script src="./assets/js/components/resources.js" type="module"></script>
@@ -48,9 +47,9 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const searchInput = document.querySelector('#search')
       const searchBtn = document.querySelector('#search-btn')
-
       const user = document.querySelector('#username')
       const actualUser = user ? user.getAttribute('class') : ''
+      
       let currentPage = 1
       let search = searchInput.value
       let resourcesType = document.querySelector('table').id
