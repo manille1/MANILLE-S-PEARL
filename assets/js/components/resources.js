@@ -49,27 +49,42 @@ const getResourcesModal = async (resourcesType, articleId) => {
     const modal = new bootstrap.Modal(modalElement)
     const data = await getResourcesById(resourcesType, articleId)
     
+    
+    if (resourcesType === 'article') {
+        const categoryName = getCategoryName(data.results[0].category)
 
-    modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
+        modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
 
-    const categoryName = getCategoryName(data.results[0].category)
-
-    modalElement.querySelector('.modal-body').innerHTML = `
+        modalElement.querySelector('.modal-body').innerHTML = `
                         <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                         <div class="text">
                             <p class="small">${categoryName}</p>
-                            <a href="#"><h2>${data.results[0].name}</h2></a>
+                            <h2>${data.results[0].name}</h2>
                             <p class="description">${data.results[0].description}</p>
+                            <p class="description">ID : ${data.results[0].id}</p>
                             <div class="info">
                                 <p>Prix : ${data.results[0].price} €</p>
                                 <p>${data.results[0].stock === 0 ? 'Rupture de stock' : data.results[0].stock + ' en stock'} <i class="fa-solid fa-boxes-stacked"></i></p>
                             </div>
                         </div>`
-    modalElement.querySelector('.modal-footer').innerHTML = `
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                        ${data.results[0].stock === 0 ? '' : 
-                            '<button type="button" class="btn btn-dark add_button">Ajouter au panier <i class="fa-solid fa-circle-plus"></i></button>'}
-                        `
+    modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>`
+
+    } else if (resourcesType === 'user') {
+        modalElement.querySelector('.modal-title').innerHTML = data.results[0].username
+
+        modalElement.querySelector('.modal-body').innerHTML = `
+                            <h2>${data.results[0].username}</h2>
+                            <p class="description">ID : ${data.results[0].id}</p>
+                            <div class="info">
+                                <p>Role : ${data.results[0].role === 1 ? 'admin <i class="fa-solid fa-user-tie"></i>' : 'user <i class="fa-solid fa-user"></i>'}</p>
+                                <p>Activé : ${data.results[0].enabled === 1 ? 
+                                    `<i class="fa-solid fa-square-check text-success"></i>` 
+                                    : `<i class="fa-solid fa-square-xmark text-danger"></i>`}</p>
+                            </div>`
+        modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>`
+
+    }
+
     modal.show()
 }
 
@@ -142,11 +157,7 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
     } else if (resourcesType === 'category') {
         listContentByType.push(`<tr>
                             <th scope="row" class="center">${i.id}</th>
-                            <td>${i.name}
-                                <a href='#' class="resource-click" data-id="${i.id}">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </a>
-                            </td>
+                            <td>${i.name}</td>
                             <td class="center">
                                 <a href='index.php?component=resources&resources=category&action=delete&id=${i.id}' class="delete">
                                 <i class="fa-solid fa-trash-can text-danger"></i></a> 

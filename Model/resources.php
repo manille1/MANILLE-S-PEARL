@@ -26,6 +26,7 @@
         $prep->closeCursor();
 
 
+
         $query = "SELECT COUNT(*) AS total FROM $resourcesType $searchPart";
         $prep = $pdo->prepare($query);
         if (!empty($searchPart)){
@@ -41,6 +42,7 @@
 
         $count = $prep->fetch(PDO::FETCH_ASSOC);
         $prep->closeCursor();
+
 
         return [$res, $count];
     }
@@ -91,7 +93,6 @@
 
         return true;
     }
-
     
     function deleteResources (PDO $pdo, string $resourcesType, int $id): string | bool{
         $correctTable = ['article', 'category', 'user'];
