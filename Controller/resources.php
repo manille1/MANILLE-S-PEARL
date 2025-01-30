@@ -54,7 +54,31 @@
                     echo json_encode(['error' => $res]);
                 }
                 exit();
-            }
+            } 
+            // else if (isset($_POST['edit_button'])) {
+            //     $id = cleanString($_GET['id']);
+            //     $username = !empty($_POST['username']) ? cleanString($_POST['username']) : null;
+            //     $password = !empty($_POST['pass']) ? cleanString($_POST['pass']) : null;
+            //     $confirmation = !empty($_POST['confirmation']) ? cleanString($_POST['confirmation']) : null;
+            //     $email = !empty($_POST['email']) ? cleanString($_POST['email']) : null;
+            //     $enabled = !empty($_POST['enabled']) ? cleanString($_POST['enabled']) : false;
+
+            //     if (!empty($password) && !empty($confirmation) && ($password === $confirmation)) {
+            //         $password = password_hash($password, PASSWORD_DEFAULT);
+            //     } elseif(!empty($password) && !empty($confirmation) && ($password !== $confirmation)) {
+            //         $errors[] = "Le mot de passe et sa confirmation sont différents";
+            //     }
+        
+        
+            //     if(empty($errors)) {
+            //         $updatedUser = updateUser($pdo, $id,$username, $email, $enabled, $password);
+            //         if (!is_bool($updatedUser)) {
+            //             $errors[] = $updatedUser;
+            //         } else {
+            //             $user = getUser($pdo, $_GET['id']);
+            //         }
+            //     }
+            // }
 
         } catch (Exception $e) {
             http_response_code(500);

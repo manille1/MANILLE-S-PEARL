@@ -35,10 +35,12 @@
                     </ul>
                 <?php }; ?>
             </li>
-            <?php if(!empty($_SESSION['auth'])){ ?>
+            <?php if(!empty($_SESSION['auth']) && $_SESSION['role'] === 1){ ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?component=resources&resources=user">Voir tout les utilisateurs</a>
                 </li>
+            <?php }; ?>
+            <?php if(!empty($_SESSION['auth'])){ ?>
                 <li class="nav-item">
                     <a class="nav-link bs-danger-text-emphasis" href="index.php?deconnect">Deconnexion</a>
                 </li>

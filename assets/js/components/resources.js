@@ -2,7 +2,7 @@ import { getResourcesById, getResources, toggleEnabledResources } from "../servi
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
-export const refreshList = async (resourcesType, page, search, actualUser) => {
+export const refreshList = async (resourcesType, page, search, actualUser, right) => {
     const tbodyElement = document.querySelector('tbody')
     const data = await getResources(resourcesType, page, search)
     //console.log('data :', data);
@@ -14,7 +14,7 @@ export const refreshList = async (resourcesType, page, search, actualUser) => {
 
     } else {
         for(let i = 0; i < data.results.length; i++){
-            listContent.push( getlistContentByType(resourcesType, data.results[i], actualUser) )
+            listContent.push( getlistContentByType(resourcesType, data.results[i], actualUser, right) )
         }
         
         tbodyElement.innerHTML = listContent.join('')
@@ -22,8 +22,7 @@ export const refreshList = async (resourcesType, page, search, actualUser) => {
         document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
         
 
-        handlePagination(page, resourcesType, search, actualUser)
-        //placé ici les crud
+        handlePagination(page, resourcesType, search, actualUser, right)
         await handleEnabledClick(resourcesType, page, search)
 
 
@@ -39,6 +38,31 @@ export const refreshList = async (resourcesType, page, search, actualUser) => {
                     await getResourcesModal(resourcesType, articleId)
                         
                 }
+            })
+        })
+
+        const modifyElement = document.getElementsByName("modify_button");
+        modifyElement.forEach(modifyLink => {
+           modifyLink.addEventListener('click', async (e) => {
+                e.preventDefault()
+
+                if(modifyLink===null){
+                    $errors = 'Id de l\'article est null et donc invalide'
+                } else {
+                    const resourceId = modifyLink.getAttribute('data-id')
+                    await getResourceFormModal('modify', resourcesType, resourceId)
+                        
+                }
+            })
+        })
+
+        const createBtn = document.querySelector("#createBtn");
+        createBtn.addEventListener('click', async () => {
+            await getResourceFormModal('create', resourcesType)
+
+            const saveBtn = document.querySelector('#saveBtn')
+            saveBtn.addEventListener('click', async () => {
+                
             })
         })
     }
@@ -88,6 +112,16 @@ const getResourcesModal = async (resourcesType, articleId) => {
     modal.show()
 }
 
+const getResourceFormModal = async (action, resourcesType, articleId) => {
+    if (action === 'modify') {
+        //mettre une modal pour modifier l'éléments avec une requête AJAX
+        //ne pas appeler la fonction, l'appeler dans le addEventListener
+    } else if (action === 'create') {
+        //mettre une modal pour créer l'éléments avec une requête AJAX
+        //ne pas appeler la fonction, l'appeler dans le addEventListener
+    }
+}
+
 const getPagination = (total) => {
     const countPages =  Math.ceil(total / 15)
     let paginationButton = []
@@ -102,7 +136,7 @@ const getPagination = (total) => {
     return paginationButton.join('')
 }
 
-const handlePagination = (page, resourcesType, search, actualUser) => {
+const handlePagination = (page, resourcesType, search, actualUser, right) => {
     const previousLink = document.querySelector('#previous-link')
     const nextLink = document.querySelector('#next-link')
     const paginationBtns = document.querySelectorAll('.pagination-btn')
@@ -111,25 +145,27 @@ const handlePagination = (page, resourcesType, search, actualUser) => {
     previousLink.addEventListener('click', async () => {
         if (page > 1 ){
             page--
-            await refreshList(resourcesType, page, search, actualUser)
+            await refreshList(resourcesType, page, search, actualUser, right)
         }
     })
 
     for (let i = 0; i < paginationBtns.length; i++){
         paginationBtns[i].addEventListener('click', async (e) => {
             const pageNumber = e.target.getAttribute('data-page')
-            await refreshList(resourcesType, pageNumber, search, actualUser)
+            await refreshList(resourcesType, pageNumber, search, actualUser, right)
         })
     }
 
     nextLink.addEventListener('click', async () => {
         page++
-        await refreshList(resourcesType, page, search, actualUser)
+        await refreshList(resourcesType, page, search, actualUser, right)
     })
 }
 
-const getlistContentByType = (resourcesType, i, actualUser) => {
+const getlistContentByType = (resourcesType, i, actualUser, right) => {
     const listContentByType = []
+    console.log(right);
+    
 
     if (resourcesType === 'article') {
         const categoryName = getCategoryName(i.category)
@@ -140,30 +176,36 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
                             <td>${categoryName}</td>
                             <td>${i.price}</td>
                             <td>${i.stock}</td>
-                            <td class="center">
-                                <a href="#"class="enabled-icon-a" data-id="${i.id}">
-                                    ${i.enabled === 1 ? 
-                                        `<i class="fa-solid fa-square-check text-success"></i>` 
-                                        : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
-                                </a>
-                            </td>
-                            <td class="center">
-                                <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
-                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
-                                <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' class="modify">
-                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
-                            </td>
+                            ${right === "1" ? 
+                                `<td class="center">
+                                    <a href="#"class="enabled-icon-a" data-id="${i.id}">
+                                        ${i.enabled === 1 ? 
+                                            `<i class="fa-solid fa-square-check text-success"></i>` 
+                                            : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
+                                    </a>
+                                </td>
+                                <td class="center">
+                                    <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                    <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' 
+                                    class="modify" name="modify_button" data-id="${i.id}">
+                                        <i class="fa-solid fa-pen-nib text-primary"></i></a>
+                                </td>` 
+                            : '' }
                         </tr>`)
     } else if (resourcesType === 'category') {
         listContentByType.push(`<tr>
                             <th scope="row" class="center">${i.id}</th>
                             <td>${i.name}</td>
-                            <td class="center">
-                                <a href='index.php?component=resources&resources=category&action=delete&id=${i.id}' class="delete">
-                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
-                                <a href='index.php?component=resources&resources=category&action=modify&id=${i.id}' class="modify">
-                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
-                            </td>
+                            ${right === "1" ? 
+                                `<td class="center">
+                                    <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                    <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' 
+                                    class="modify" name="modify_button" data-id="${i.id}">
+                                        <i class="fa-solid fa-pen-nib text-primary"></i></a>
+                                </td>` 
+                            : ''}
                         </tr>`)
     } else if (resourcesType === 'user') {
         listContentByType.push(`<tr>
@@ -174,21 +216,24 @@ const getlistContentByType = (resourcesType, i, actualUser) => {
                                 </a>
                             </td>
                             <td>${i.role === 1 ? 'admin <i class="fa-solid fa-user-tie"></i>' : 'user <i class="fa-solid fa-user"></i>'}</td>
-                            ${i.username !== actualUser ? 
-                                `<td class="center">
-                                    <a href="#" class="enabled-icon-a" data-id="${i.id}">
-                                        ${i.enabled === 1 ? 
-                                            `<i class="fa-solid fa-square-check text-success"></i>` 
-                                            : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
-                                    </a>
+                            ${right === "1" ?
+                                `${i.username !== actualUser ? 
+                                    `<td class="center">
+                                        <a href="#" class="enabled-icon-a" data-id="${i.id}">
+                                            ${i.enabled === 1 ? 
+                                                `<i class="fa-solid fa-square-check text-success"></i>` 
+                                                : `<i class="fa-solid fa-square-xmark text-danger"></i>`}
+                                        </a>
+                                    </td>` 
+                                    : `<td class="center"><i class="fa-solid fa-square-check" style="color: #75b798;"></i></td>`} 
+                                <td class="center">
+                                    <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i></a> 
+                                    <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' 
+                                    class="modify" name="modify_button" data-id="${i.id}">
+                                        <i class="fa-solid fa-pen-nib text-primary"></i></a>
                                 </td>` 
-                                : `<td class="center"><i class="fa-solid fa-square-check" style="color: #75b798;"></i></td>`}
-                            <td class="center">
-                                <a href='index.php?component=resources&resources=user&action=delete&id=${i.id}' class="delete">
-                                <i class="fa-solid fa-trash-can text-danger"></i></a> 
-                                <a href='index.php?component=resources&resources=user&action=modify&id=${i.id}' class="modify">
-                                <i class="fa-solid fa-pen-nib text-primary"></i></a>
-                            </td>
+                            : ''}
                         </tr>`)
     }
 
@@ -219,4 +264,12 @@ const handleEnabledClick = async (resourcesType, currentPage, search) => {
             }
         })
     })
+}
+
+const modifyResources = async (resourcesType, resourcesId) => {
+
+}
+
+const createResources = async (resourcesType) => {
+
 }
