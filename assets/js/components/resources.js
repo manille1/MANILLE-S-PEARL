@@ -51,7 +51,7 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
                 } else {
                     const resourceId = modifyLink.getAttribute('data-id')
                     await getResourceFormModal('modify', resourcesType, resourceId)
-                        
+                    
                 }
             })
         })
@@ -60,10 +60,10 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
         createBtn.addEventListener('click', async () => {
             await getResourceFormModal('create', resourcesType)
 
-            const saveBtn = document.querySelector('#saveBtn')
-            saveBtn.addEventListener('click', async () => {
-                
-            })
+            // const saveBtn = document.querySelector('#saveBtn')
+            // saveBtn.addEventListener('click', async () => {
+            //     //insérer l'élément dans la BDD
+            // })
         })
     }
 }
@@ -91,7 +91,7 @@ const getResourcesModal = async (resourcesType, articleId) => {
                                 <p>${data.results[0].stock === 0 ? 'Rupture de stock' : data.results[0].stock + ' en stock'} <i class="fa-solid fa-boxes-stacked"></i></p>
                             </div>
                         </div>`
-    modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>`
+        modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>`
 
     } else if (resourcesType === 'user') {
         modalElement.querySelector('.modal-title').innerHTML = data.results[0].username
@@ -113,9 +113,116 @@ const getResourcesModal = async (resourcesType, articleId) => {
 }
 
 const getResourceFormModal = async (action, resourcesType, articleId) => {
+    const modalElement = document.querySelector('#staticBackdrop')
+    const modal = new bootstrap.Modal(modalElement)
+        
+        
+        if (resourcesType === 'article') {
+            modalElement.querySelector('.modal-body').innerHTML = `
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Photo d'article</label>
+                                    <input class="form-control" type="file" id="formFile" placeholder="Photo d'article">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Category</label>
+                                    <input type="int" class="form-control" id="category" required>
+                                    <div id="emailHelp" class="form-text"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description de l'article</label>
+                                    <input type="textarea" class="form-control" id="description">
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="prix" class="form-label">Prix en €</label>
+                                        <input type="text" class="form-control" id="prix" required>
+                                    </div>
+                                    <div class="col">
+                                        <label for="stock" class="form-label">Stock</label>
+                                        <input type="text" class="form-control" id="stock">
+                                    </div>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="enabled">
+                                    <label class="form-check-label" for="enabled">Disponible</label>
+                                </div>
+                            </form>`
+            modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                                <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+    
+        } else if (resourcesType === 'category') {
+            modalElement.querySelector('.modal-body').innerHTML = `
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                            </form>`
+            modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                                <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+
+        } else if (resourcesType === 'user') {
+            modalElement.querySelector('.modal-body').innerHTML = `
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Rôle</label>
+                                <select id ="role" class="form-select" aria-label="Default select example">
+                                    <option id="default" selected>Sélectionnez le rôle</option>
+                                    <option id="admin" value="1">Administrateur</option>
+                                    <option id="user" value="2">Utilisateur</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="enabled">
+                                <label class="form-check-label" for="enabled">Disponible</label>
+                            </div>
+                        </form>`
+            modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                            <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+        }
+        modal.show()
+
     if (action === 'modify') {
-        //mettre une modal pour modifier l'éléments avec une requête AJAX
-        //ne pas appeler la fonction, l'appeler dans le addEventListener
+        const data = await getResourcesById(resourcesType, articleId)
+        if (resourcesType === 'article') {
+            modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
+
+            document.getElementById("name").value = data.results[0].name
+            //rajouter l'image en dehors du JS
+            document.getElementById("category").value = data.results[0].category
+            document.getElementById("description").value = data.results[0].description
+            document.getElementById("prix").value = data.results[0].price
+            document.getElementById("stock").value = data.results[0].stock
+            document.getElementById("enabled").checked = data.results[0].enabled === 1 ? true : false
+        } else if (resourcesType === 'category') {
+            modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
+            document.getElementById("name").value = data.results[0].name
+        } else if (resourcesType === 'user') {
+            modalElement.querySelector('.modal-title').innerHTML = data.results[0].username
+            document.getElementById("name").value = data.results[0].username
+
+            if(data.results[0].role === 1){
+                document.getElementById("role").querySelector('#admin').selected = true
+                document.getElementById("role").children.selected = false
+
+            } else {
+                ddocument.getElementById("role").querySelector('#user').selected = true
+                document.getElementById("role").children.selected = false
+            }
+
+            document.getElementById("enabled").checked = data.results[0].enabled === 1 ? true : false
+
+        }
+        //ne pas appeler la fonction pour enregistrer, l'appeler dans le addEventListener
     } else if (action === 'create') {
         //mettre une modal pour créer l'éléments avec une requête AJAX
         //ne pas appeler la fonction, l'appeler dans le addEventListener
@@ -164,8 +271,6 @@ const handlePagination = (page, resourcesType, search, actualUser, right) => {
 
 const getlistContentByType = (resourcesType, i, actualUser, right) => {
     const listContentByType = []
-    console.log(right);
-    
 
     if (resourcesType === 'article') {
         const categoryName = getCategoryName(i.category)
@@ -267,7 +372,7 @@ const handleEnabledClick = async (resourcesType, currentPage, search) => {
 }
 
 const modifyResources = async (resourcesType, resourcesId) => {
-
+    
 }
 
 const createResources = async (resourcesType) => {
