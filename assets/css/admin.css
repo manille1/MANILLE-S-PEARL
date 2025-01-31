@@ -92,3 +92,8 @@ h1{
 #addBtn{
     margin-bottom: 2em;
 }
+
+.img-thumbnail{
+    width: 100px;
+    height: 100px;
+}

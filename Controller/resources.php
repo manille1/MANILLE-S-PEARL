@@ -54,31 +54,37 @@
                     echo json_encode(['error' => $res]);
                 }
                 exit();
-            } 
-            // else if (isset($_POST['edit_button'])) {
-            //     $id = cleanString($_GET['id']);
-            //     $username = !empty($_POST['username']) ? cleanString($_POST['username']) : null;
-            //     $password = !empty($_POST['pass']) ? cleanString($_POST['pass']) : null;
-            //     $confirmation = !empty($_POST['confirmation']) ? cleanString($_POST['confirmation']) : null;
-            //     $email = !empty($_POST['email']) ? cleanString($_POST['email']) : null;
-            //     $enabled = !empty($_POST['enabled']) ? cleanString($_POST['enabled']) : false;
 
-            //     if (!empty($password) && !empty($confirmation) && ($password === $confirmation)) {
-            //         $password = password_hash($password, PASSWORD_DEFAULT);
-            //     } elseif(!empty($password) && !empty($confirmation) && ($password !== $confirmation)) {
-            //         $errors[] = "Le mot de passe et sa confirmation sont différents";
-            //     }
+            } else if ($actionName === 'create') {
+                $name = !empty($_POST['name']) ? cleanString($_POST['name']) : null;
+                $category = !empty($_POST['category']) ? cleanString($_POST['category']) : null;
+                $description = !empty($_POST['description']) ? cleanString($_POST['description']) : null;
+                $price = !empty($_POST['price']) ? cleanString($_POST['price']) : false;
+                $stock = !empty($_POST['stock']) ? cleanString($_POST['stock']) : false;
+                $enabled = !empty($_POST['enabled']) ? cleanString($_POST['enabled']) : false;
         
         
-            //     if(empty($errors)) {
-            //         $updatedUser = updateUser($pdo, $id,$username, $email, $enabled, $password);
-            //         if (!is_bool($updatedUser)) {
-            //             $errors[] = $updatedUser;
-            //         } else {
-            //             $user = getUser($pdo, $_GET['id']);
-            //         }
-            //     }
-            // }
+                if(empty($name) || empty($category) || empty($price) || empty($stock) || empty($enabled)) {
+                    //$updatedUser = createResources($pdo, $name,$category, $description, $price, $stock, $enabled);
+                    header('Content-Type: application/json');
+                    echo json_encode(['error' => 'No resource with given identifier found']);
+                    exit();
+                }
+
+                $fileName = null;
+
+                var_dump('files :',$_FILES);
+                if(!empty($_FILES['image']['name'])){
+
+                }
+                
+                
+                // if (!is_bool($updatedUser)) {
+                //         $errors[] = $updatedUser;
+                //     } else {
+                //         $user = getUser($pdo, $_GET['id']);
+                //     }
+            }
 
         } catch (Exception $e) {
             http_response_code(500);

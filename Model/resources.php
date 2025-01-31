@@ -111,4 +111,33 @@
 
         return true;
     }
+
+    function createResources (PDO $pdo, string $name, string $category, string $description, string $price,  string $stock, int $enabled,
+        string | null  $imageName = null){
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $query="INSERT INTO article (name, category, description, image_name, price, stock, enabled) VALUES 
+                (:name, :category, :description, :image_name, :price, :stock, :enabled)";
+
+        $prep = $pdo->prepare($query);
+        $prep->bindValue(':name', $name,);
+        $prep->bindValue(':category', $category,);
+        $prep->bindValue(':description', $description);
+        $prep->bindValue(':image_name', $imageName);
+        $prep->bindValue(':price', $price, PDO::PARAM_INT);
+        $prep->bindValue(':stock', $stock, PDO::PARAM_INT);
+        $prep->bindValue(':enabled', $enabled, PDO::PARAM_INT);
+        try
+        {
+            $prep->execute();
+            $id = (int)$pdo->lastInsertId();
+        }
+        catch (PDOException $e)
+        {
+            return " erreur : ".$e->getCode() .' :</b> '. $e->getMessage();
+        }
+        $prep->closeCursor();
+    
+        return $id;
+    }
 ?>

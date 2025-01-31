@@ -44,3 +44,33 @@ export const toggleEnabledResources = async (resourcesType, id, currentPage, sea
         return { error: error.message };
     }
 }
+
+export const createResources = async (resourcesType, form) =>  {
+
+    const data = new FormData(form)
+
+    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=create`, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        method: 'POST',
+        body: data
+    })
+
+    return response.json()
+}
+
+export const updateResources = async (resourcesType, form, id) =>  {
+
+    const data = new FormData(form)
+
+    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=update&id=${id}&page=${currentPage}&search=${search}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        method: 'POST',
+        body: data
+    })
+
+    return response.json()
+}

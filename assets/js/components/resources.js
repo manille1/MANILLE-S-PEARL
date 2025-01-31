@@ -1,4 +1,4 @@
-import { getResourcesById, getResources, toggleEnabledResources } from "../services/resources.js";
+import { getResourcesById, getResources, toggleEnabledResources, createResources, updateResources } from "../services/resources.js";
 import { showToast } from "./shared/showToast.js";
 import { getCategoryName } from "./shared/getCategoryName.js";
 
@@ -51,8 +51,14 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
                 } else {
                     const resourceId = modifyLink.getAttribute('data-id')
                     await getResourceFormModal('modify', resourcesType, resourceId)
-                    
                 }
+
+                const modifyBtn = document.querySelector('#saveBtn')
+                modifyBtn.addEventListener('click', async () => {
+                    //récupérer les données et les passer
+                    //envoyer la requête insérer l'élément dans la BDD
+                    //await updateResources(resourcesType, form, id)
+                })
             })
         })
 
@@ -60,10 +66,23 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
         createBtn.addEventListener('click', async () => {
             await getResourceFormModal('create', resourcesType)
 
-            // const saveBtn = document.querySelector('#saveBtn')
-            // saveBtn.addEventListener('click', async () => {
-            //     //insérer l'élément dans la BDD
-            // })
+            const saveBtn = document.querySelector('#saveBtn')
+            saveBtn.addEventListener('click', async () => {
+                //récupérer les données et les passer
+                if (!form.checkValidity()) {
+                    form.reportValidity()
+                    return false
+                }
+
+                if (result.hasOwnProperty('success')) {
+                    showToast(message, 'bg-success')
+                    (e.target.name === 'create_button') ? form.reset() :null
+                } else if(result.hasOwnProperty('error')) {
+                    showToast(`Une erreur a été rencontrée: ${result.error}`, 'bg-danger')
+                }
+                //envoyer la requête insérer l'élément dans la BDD
+                //await createResources(resourcesType, form)
+            })
         })
     }
 }
@@ -116,17 +135,21 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
     const modalElement = document.querySelector('#staticBackdrop')
     const modal = new bootstrap.Modal(modalElement)
         
-        
         if (resourcesType === 'article') {
             modalElement.querySelector('.modal-body').innerHTML = `
-                            <form>
+                            <form method="post" id="person-form" enctype="multiport/form-data">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom</label>
                                     <input type="text" class="form-control" id="name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">Photo d'article</label>
-                                    <input class="form-control" type="file" id="formFile" placeholder="Photo d'article">
+                                    <label for="" class="form-label">Photo d'article</label>
+                                    <input class="form-control" type="file" id="image">
+                                </div>
+                                <!-- img existe que si il y a id dans url donc que qd modif -->
+                                <div class="mb-3 d-flex align-items-end" id="resources-image"> 
+                                    <img class="img-thumbnail d-none" src="" width="100"></i>
+                                    <a href="#" class="x-mark d-none" ><i class="fa fa-times text-danger ms-3" id="remove-image-btn" data-id=""></i></a>
                                 </div>
                                 <div class="mb-3">
                                     <label for="category" class="form-label">Category</label>
@@ -153,7 +176,7 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
                                 </div>
                             </form>`
             modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                                <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+                                <button id="saveBtn" type="submit" class="btn btn-primary">Enregistrer</button>`
     
         } else if (resourcesType === 'category') {
             modalElement.querySelector('.modal-body').innerHTML = `
@@ -164,7 +187,7 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
                                 </div>
                             </form>`
             modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                                <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+                                <button id="saveBtn" type="submit" class="btn btn-primary">Enregistrer</button>`
 
         } else if (resourcesType === 'user') {
             modalElement.querySelector('.modal-body').innerHTML = `
@@ -187,22 +210,49 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
                             </div>
                         </form>`
             modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                            <button id="type="submit" class="btn btn-primary">Enregistrer</button>`
+                            <button id="saveBtn" type="submit" class="btn btn-primary">Enregistrer</button>`
         }
         modal.show()
 
     if (action === 'modify') {
         const data = await getResourcesById(resourcesType, articleId)
+
         if (resourcesType === 'article') {
             modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
 
             document.getElementById("name").value = data.results[0].name
-            //rajouter l'image en dehors du JS
-            document.getElementById("category").value = data.results[0].category
-            document.getElementById("description").value = data.results[0].description
-            document.getElementById("prix").value = data.results[0].price
-            document.getElementById("stock").value = data.results[0].stock
-            document.getElementById("enabled").checked = data.results[0].enabled === 1 ? true : false
+            
+            //METTRE UNE IMAGE
+
+            const imgInput = document.querySelector('#image')
+            const imgPreview = document.querySelector('.img-thumbnail')
+            const xmarkImg = document.querySelector('.x-mark')
+            // document.getElementById('remove-image-btn').setAttribute('data-id', data.results[0].id)
+            imgPreview.src = `./IMG/${data.results[0].image_name}.jpg`
+
+            imgInput.addEventListener('change', () => {
+                if (imgInput.files.length > 0) {   //Modifie les id pour annulé la classe d-none en css si une image est présente
+                    imgPreview.classList.remove('d-none')
+                    xmarkImg.classList.remove('d-none')
+                } else {
+                    imgPreview.setAttribute('class', 'img-thumbnail d-none')
+                    xmarkImg.setAttribute('class', 'x-mark d-none')
+                }
+            })
+
+            xmarkImg.addEventListener('click', () => { //enlever l'img
+                //vider l'input
+                imgPreview.src = ``
+                imgPreview.setAttribute('class', 'img-thumbnail d-none')
+                xmarkImg.setAttribute('class', 'x-mark d-none')
+            })
+
+            document.getElementById('category').value = data.results[0].category
+            document.getElementById('description').value = data.results[0].description
+            document.getElementById('prix').value = data.results[0].price
+            document.getElementById('stock').value = data.results[0].stock
+            document.getElementById('enabled').checked = data.results[0].enabled === 1 ? true : false
+
         } else if (resourcesType === 'category') {
             modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
             document.getElementById("name").value = data.results[0].name
@@ -211,21 +261,18 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
             document.getElementById("name").value = data.results[0].username
 
             if(data.results[0].role === 1){
+                document.getElementById("role").children.selected = false
                 document.getElementById("role").querySelector('#admin').selected = true
-                document.getElementById("role").children.selected = false
+                
 
-            } else {
-                ddocument.getElementById("role").querySelector('#user').selected = true
+            } else if (data.results[0].role === 2) {
                 document.getElementById("role").children.selected = false
+                document.getElementById("role").querySelector('#user').selected = true
             }
 
             document.getElementById("enabled").checked = data.results[0].enabled === 1 ? true : false
 
         }
-        //ne pas appeler la fonction pour enregistrer, l'appeler dans le addEventListener
-    } else if (action === 'create') {
-        //mettre une modal pour créer l'éléments avec une requête AJAX
-        //ne pas appeler la fonction, l'appeler dans le addEventListener
     }
 }
 
@@ -375,6 +422,34 @@ const modifyResources = async (resourcesType, resourcesId) => {
     
 }
 
-const createResources = async (resourcesType) => {
+const createNewResources = async (resourcesType) => {
 
 }
+
+// export const handlePersonForm = () => {
+//     const saveBtn = document.querySelector('#saveBtn')
+
+//     saveBtn.addEventListener('click', async(e) => {
+//         const form = document.querySelector('form')
+
+//         if (!form.checkValidity()) {
+//             form.reportValidity()
+//             return false
+//         }
+
+//         if (e.target.name === 'create_button') {
+//             result = await createPerson(form)
+//             message = 'La personne a été créé avec succès'
+//         } else {
+//             result = await updatePerson(form, e.target.getAttribute('data-id'))
+//             message = 'La personne a été modifié avec succès'
+//         }
+
+//         if (result.hasOwnProperty('success')) {
+//             showToast(message, 'bg-success')
+//             (e.target.name === 'create_button') ? form.reset() :null
+//         } else if(result.hasOwnProperty('error')) {
+//             showToast(`Une erreur a été rencontrée: ${result.error}`, 'bg-danger')
+//         }
+//     })
+// }

@@ -3,6 +3,7 @@
     require __DIR__.'/vendor/autoload.php';
     require "Includes/database.php";
     require "Includes/functions.php";
+    require "config/config.php";
 
     if(isset($_GET['deconnect'])) {
         session_destroy();
