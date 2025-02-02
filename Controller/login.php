@@ -18,12 +18,10 @@
             } elseif(0 === $connexion['enabled']) {
                 $errors[] = "Ce compte est désactivé";
             } else {
-                echo 'Vous êtes connécté';
                 $_SESSION["auth"] = true;
                 $_SESSION["username"] = $connexion['username'];
-                $_SESSION["role"] = $connexion['role'] === 1 ? 'admin' : 'worker';
+                $_SESSION["role"] = $connexion['role'] === 1 ? 1 : 2;
                 header("Content-Type: application/json");
-                
                 echo json_encode(['authentication' => true]);
                 exit();
             }

@@ -1,4 +1,4 @@
-<h1>Page de Connexion</h1>
+<h1 class="login">Page de Connexion</h1>
 
 <div class="container vh-100 d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">
@@ -29,14 +29,17 @@
         const validLoginBtn = document.querySelector('#valid-login-btn')
         const loginForm = document.querySelector('#login-form')
         const errorElement = document.querySelector('#errors')
-
-        validLoginBtn.addEventListener('click',async () => {
+        const loginBtn = document.querySelector('#login-btn');
+            
+        validLoginBtn.addEventListener('click',async (e) => {
+            e.preventDefault();
+            
             if (!loginForm.checkValidity()) {
                 loginForm.reportValidity()
                 return false
             }
-
-           const loginResult = await login(loginForm.elements['username'].value, loginForm.elements.pass.value)
+            
+            const loginResult = await login(loginForm.elements['username'].value, loginForm.elements.pass.value)
 
             if (loginResult.hasOwnProperty('authentication')){
                 document.location.href = 'index.php'
