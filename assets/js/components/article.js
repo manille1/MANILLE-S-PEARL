@@ -16,46 +16,53 @@ export const refreshList = async (page, search) => {
         showToast('Aucun résultat trouvé :/', 'bg-danger')
 
     } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
-        const categoryName = getCategoryName(data.results[0].category)
 
-        listContent.push(`<div class="card">
-                            <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
-                                <div class="text">
-                                    <p class="small">${categoryName}</p>
-                                    <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
-                                    <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
-                                    <div class="info">
-                                        <p>${data.results[0].price} €</p>
-                                        <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                        <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+        if (data.results[0].enabled === 1) {
+
+            const categoryName = getCategoryName(data.results[0].category)
+            listContent.push(`<div class="card">
+                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                                    <div class="text">
+                                        <p class="small">${categoryName}</p>
+                                        <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
+                                        <p class="description">${data.results[0].description.slice(0, 50)} ...</p>
+                                        <div class="info">
+                                            <p>${data.results[0].price} €</p>
+                                            <p>${data.results[0].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                            <a href="#" class="add_button" data-id="${data.results[0].id}">${data.results[0].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                        </div>
                                     </div>
-                                </div>
-                        </div>`)
+                            </div>`)
 
-        sectionArcticles.innerHTML = listContent.join('')
-        
-        const articleId = data.results[0].id
-        await getArticleModal(articleId)
+            sectionArcticles.innerHTML = listContent.join('')
+            
+            const articleId = data.results[0].id
+            await getArticleModal(articleId)
+        } else {
+            showToast('L\'article que vous chercher n\'est pas disponible', 'bg-danger')
+        }
 
     } else {
         for(let i = 0; i < data.results.length; i++){
 
-        const categoryName = getCategoryName(data.results[i].category)
+            if (data.results[i].enabled === 1) {
 
-        listContent.push(`<div class="card">
-                            <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                                <div class="text">
-                                    <p class="small">${categoryName}</p>
-                                    <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
-                                    <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                    <div class="info">
-                                        <p>${data.results[i].price} €</p>
-                                        <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                        <a href="#" class="add_button" data-id="${data.results[i].id}">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
-                                    </div>
-                                </div>
-                        </div>`)
-        }
+                const categoryName = getCategoryName(data.results[i].category)
+                listContent.push(`<div class="card">
+                                    <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
+                                        <div class="text">
+                                            <p class="small">${categoryName}</p>
+                                            <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
+                                            <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
+                                            <div class="info">
+                                                <p>${data.results[i].price} €</p>
+                                                <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                                <a href="#" class="add_button" data-id="${data.results[i].id}">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                            </div>
+                                        </div>
+                                </div>`)
+                }
+            }
 
         sectionArcticles.innerHTML = listContent.join('')
 
