@@ -126,7 +126,7 @@
     
             } elseif ($componentName === 'gestionmarketingadmin'){
                 require "Controller/login.php";
-                /*--Connexion admin : ?component=gestionmarketingadmin--*/
+                /*--Connexion admin : index.php?component=gestionmarketingadmin--*/
                     
             } elseif(empty($_SESSION) && file_exists("Controller/$componentName.php")){
                 require "_partials/navbar.php";
