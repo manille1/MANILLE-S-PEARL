@@ -7,7 +7,7 @@
 <?php } ?>
 
 
-<?php if($_SESSION['role'] === 1 && $_GET['resources']){ ?>
+<?php if($_SESSION['role'] === 1 && $_GET['resources'] === 'article'){ ?>
   <div class="d-grid gap-2 col-6 mx-auto">
     <button id="createBtn" class="btn btn-outline-success" type="button" name="create_button">Ajouter <i id="createIcon" class="fa-regular fa-square-plus"></i></button>
   </div>

@@ -1,5 +1,5 @@
 #fond_1{
-    background: url(../../IMG/fond_perles.jpg) no-repeat;
+    background: url(../../uploads/fond_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;
@@ -10,7 +10,7 @@
 }
 
 #fond_2{
-    background: url(../../IMG/bracelet_or.jpg) no-repeat;
+    background: url(../../uploads/bracelet_or.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;
@@ -21,7 +21,7 @@
 }
 
 #fond_4{
-    background: url(../../IMG/boucles_soleil.jpg) no-repeat;
+    background: url(../../uploads/boucles_soleil.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;
@@ -32,7 +32,7 @@
 }
 
 #fond_3{
-    background: url(../../IMG/bague_perles.jpg) no-repeat;
+    background: url(../../uploads/bague_perles.jpg) no-repeat;
     background-attachment: fixed;
     padding: 250px 0;
     background-size: cover;
@@ -86,7 +86,6 @@ img{
 .small{
     margin: 0;
     font-size: 15px;
-    /* color: #2e2e2e; */
     font-style: italic;
     text-transform: capitalize;
 }
@@ -98,7 +97,6 @@ h2{
 .text{
     padding: 13px;
     text-align: start;
-    /* color: black; */
 }
 
 p{
@@ -121,11 +119,9 @@ p{
 }
 
 .modal .info p:first-child{
-    /* color: #3b3b3b; */
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .modal .info p:first-child:hover{
     transform: scale(1.08);
-    /* color: black; */
 }

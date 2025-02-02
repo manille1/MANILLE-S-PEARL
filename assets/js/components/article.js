@@ -4,13 +4,13 @@ import { getCategoryName } from "./shared/getCategoryName.js";
 
 export const refreshList = async (page, search) => {
     const sectionArcticles = document.querySelector('#articles')
-    console.log('avant getArticles');
-    
     const data = await getArticles(page, search)
     console.log('data :', data);
     
 
     let listContent = []
+    let countFinal = data.count.total;
+    
     
     if (data.error === "No resource with given identifier found") {
         showToast('Aucun résultat trouvé :/', 'bg-danger')
@@ -21,7 +21,7 @@ export const refreshList = async (page, search) => {
 
             const categoryName = getCategoryName(data.results[0].category)
             listContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                                <img src="./uploads/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                                     <div class="text">
                                         <p class="small">${categoryName}</p>
                                         <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
@@ -49,7 +49,7 @@ export const refreshList = async (page, search) => {
 
                 const categoryName = getCategoryName(data.results[i].category)
                 listContent.push(`<div class="card">
-                                    <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
+                                    <img src="./uploads/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                                         <div class="text">
                                             <p class="small">${categoryName}</p>
                                             <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
@@ -61,12 +61,15 @@ export const refreshList = async (page, search) => {
                                             </div>
                                         </div>
                                 </div>`)
+                } else {
+                    countFinal --
                 }
-            }
+
+            } 
 
         sectionArcticles.innerHTML = listContent.join('')
 
-        document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
+        document.querySelector('.pagination').innerHTML = getPagination(countFinal)
 
         handlePagination(page, search)
 
@@ -93,7 +96,6 @@ export const getArticleModal = async (articleId) => {
     const modalElement = document.querySelector('#staticBackdrop')
     const modal = new bootstrap.Modal(modalElement)
     const data = await getArticleById(articleId)
-    console.log('actualArticle :', data)
     
     
     modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
@@ -101,7 +103,7 @@ export const getArticleModal = async (articleId) => {
     const categoryName = getCategoryName(data.results[0].category)
 
     modalElement.querySelector('.modal-body').innerHTML = `
-                        <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                        <img src="./uploads/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                         <div class="text">
                             <p class="small">${categoryName}</p>
                             <a href="#"><h2>${data.results[0].name}</h2></a>

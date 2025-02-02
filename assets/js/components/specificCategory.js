@@ -10,13 +10,14 @@ export const refreshArticlesCard = async (category, page, search) => {
     
     
     let cardContent = []
+    let countFinal = data.count.total;
 
     if (data.error === "No resource with given identifier found") {
             showToast('Aucun résultat trouvé :/', 'bg-danger')
     
     } else if (data.count.total === 1 && (search !== null && search !== undefined && search !== '')) {
         cardContent.push(`<div class="card">
-                             <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                             <img src="./uploads/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                                  <div class="text">
                                      <p class="small">${categoryName}</p>
                                      <a href="#" class="card-click" data-id="${data.results[0].id}"><h2>${data.results[0].name}</h2></a>
@@ -36,25 +37,30 @@ export const refreshArticlesCard = async (category, page, search) => {
  
     } else {
         for(let i = 0; i < data.results.length; i++){
-            cardContent.push(`<div class="card">
-                                <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
-                                <div class="text">
-                                    <p class="small">${categoryName}</p>
-                                    <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
-                                    <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
-                                    <div class="info">
-                                        <p>${data.results[i].price} €</p>
-                                        <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
-                                        <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+
+            if (data.results[i].enabled === 1) {
+                cardContent.push(`<div class="card">
+                                    <img src="./uploads/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
+                                    <div class="text">
+                                        <p class="small">${categoryName}</p>
+                                        <a href="#" class="card-click" data-id="${data.results[i].id}"><h2>${data.results[i].name}</h2></a>
+                                        <p class="description">${data.results[i].description.slice(0, 50)} ...</p>
+                                        <div class="info">
+                                            <p>${data.results[i].price} €</p>
+                                            <p>${data.results[i].stock} en stock <i class="fa-solid fa-boxes-stacked"></i></p>
+                                            <a class="add_button" href="#">${data.results[i].stock === 0 ? '' : '<i class="fa-solid fa-circle-plus"></i>'}</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>`)
+                                </div>`)
+            } else {
+                countFinal --
+            }
         }
 
         sectionArticles.innerHTML = cardContent.join('');
         
         if(data.count > 15){
-            document.querySelector('.pagination').innerHTML = getPagination(data.count.total)
+            document.querySelector('.pagination').innerHTML = getPagination(countFinal)
             handlePagination(page, search)
         }
 
@@ -68,7 +74,6 @@ export const refreshArticlesCard = async (category, page, search) => {
                     $errors = 'Id de l\'article est null et donc invalide'
                 } else {
                     const articleId = cardLink.getAttribute('data-id')
-                    //console.log('En attente de la moddal :', articleId)
                     await getArticleModal(1, articleId)
                     
                 }
@@ -92,7 +97,7 @@ export const getArticleModal = async (categoryNumber, articleId) => {
 
 
     modalElement.querySelector('.modal-body').innerHTML = `
-                        <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                        <img src="./uploads/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                         <div class="text">
                             <p class="small">${categoryName}</p>
                             <a href="#"><h2>${data.results[0].name}</h2></a>

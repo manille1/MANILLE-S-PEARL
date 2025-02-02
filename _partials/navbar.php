@@ -27,10 +27,10 @@
                         Voir les catégories
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="index.php?component=1">Colliers</a></li>
-                        <li><a class="dropdown-item" href="index.php?component=2">Bracelets</a></li>
-                        <li><a class="dropdown-item" href="index.php?component=3">Bagues</a></li>
-                        <li><a class="dropdown-item" href="index.php?component=4">Boucles d'oreilles</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=specificCategory&category=1">Colliers</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=specificCategory&category=2">Bracelets</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=specificCategory&category=3">Bagues</a></li>
+                        <li><a class="dropdown-item" href="index.php?component=specificCategory&category=4">Boucles d'oreilles</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="index.php?component=cart">Panier</a></li>
                     </ul>

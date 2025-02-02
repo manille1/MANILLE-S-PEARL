@@ -45,7 +45,7 @@
         $prep->bindValue(':image_name', $imageName);
         $prep->bindValue(':price', $faker->numberBetween(25, 500));
         $prep->bindValue(':stock', $faker->numberBetween(0, 200));
-        $prep->bindValue(':enabled', $faker->numberBetween(0, 1), PDO::PARAM_INT);
+        $prep->bindValue(':enabled',  1);
 
         try {
             $prep->execute();
@@ -57,12 +57,13 @@
     }
 
     for($i = 0; $i<20; $i++){
-        $prep = $pdo->prepare('INSERT INTO user (username, password, role) 
-                            VALUES (:username, :password, :role)');
+        $prep = $pdo->prepare('INSERT INTO user (username, password, role, enabled) 
+                            VALUES (:username, :password, :role, :enabled)');
 
         $prep->bindValue(':username', $faker->word());
         $prep->bindValue(':password', password_hash($faker->word(), PASSWORD_DEFAULT));
         $prep->bindValue(':role', $faker->numberBetween(1, 2), PDO::PARAM_INT);
+        $prep->bindValue(':enabled', $faker->numberBetween(0, 1), PDO::PARAM_INT);
 
         try {
             $prep->execute();

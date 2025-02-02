@@ -3,12 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-    background: url(../../IMG/fond_soie.jpg) no-repeat center center;
-=======
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 85%, rgba(255, 255, 255, 0.8) 104%), 
-        url(../../uploads/star_sky.jpg) no-repeat center center;
->>>>>>> login
+    background: url(../../uploads/fond_soie.jpg) no-repeat center center;
     background-size: cover;
     background-attachment: fixed;
     width: 100%;
