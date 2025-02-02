@@ -127,7 +127,6 @@
         $prep->bindValue(':price', $price, PDO::PARAM_INT);
         $prep->bindValue(':stock', $stock, PDO::PARAM_INT);
         $prep->bindValue(':enabled', $enabled, PDO::PARAM_INT);
-        $prep->bindParam(':image_name', $imageName);
 
         try{
             $prep->execute();
@@ -140,8 +139,8 @@
         return $id;
     }
 
-    function updateResources (PDO $pdo, int $id, string $name, string $category, string $description, string $price,  string $stock, int $enabled,
-        string | null  $imageName = null){
+    function updateResources (PDO $pdo, int $id, string $name, string $category, string $description, 
+        string $price,  string $stock, int $enabled, string | null  $imageName = null){
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $query="UPDATE article SET name = :name, category = :category, description = :description, 

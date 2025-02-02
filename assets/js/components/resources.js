@@ -5,7 +5,6 @@ import { getCategoryName } from "./shared/getCategoryName.js";
 export const refreshList = async (resourcesType, page, search, actualUser, right) => {
     const tbodyElement = document.querySelector('tbody')
     const data = await getResources(resourcesType, page, search)
-    console.log('data :', data);
 
     let listContent = []
     
@@ -165,7 +164,6 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
                 
                 imgInput.addEventListener('change', () => {
                     if (imgInput.files.length > 0) {
-                        // imgPreview.src = `${imgInput.value}`
                         imgPreview.classList.remove('d-none')
                         xmarkImg.classList.remove('d-none')
 
@@ -186,7 +184,7 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
     
         } else if (resourcesType === 'category') {
             modalElement.querySelector('.modal-body').innerHTML = `
-                            <form>
+                            <form method="post" id="resources-form" enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom</label>
                                     <input type="text" class="form-control" id="name" required>
@@ -197,7 +195,7 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
 
         } else if (resourcesType === 'user') {
             modalElement.querySelector('.modal-body').innerHTML = `
-                        <form>
+                        <form method="post" id="resources-form" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nom</label>
                                 <input type="text" class="form-control" id="name" required>
@@ -228,7 +226,6 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
 
             document.getElementById("name").value = data.results[0].name
             
-            //METTRE UNE IMAGE
             const imgPreview = document.querySelector('.img-thumbnail')
             imgPreview.src = `./uploads/${data.results[0].image_name}.jpg`
 
@@ -345,9 +342,6 @@ const getlistContentByType = (resourcesType, i, actualUser, right) => {
                                 `<td class="center">
                                     <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
                                         <i class="fa-solid fa-trash-can text-danger"></i></a> 
-                                    <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' 
-                                    class="modify" name="modify_button" data-id="${i.id}">
-                                        <i class="fa-solid fa-pen-nib text-primary"></i></a>
                                 </td>` 
                             : ''}
                         </tr>`)
@@ -373,9 +367,6 @@ const getlistContentByType = (resourcesType, i, actualUser, right) => {
                                 <td class="center">
                                     <a href='index.php?component=resources&resources=article&action=delete&id=${i.id}' class="delete">
                                         <i class="fa-solid fa-trash-can text-danger"></i></a> 
-                                    <a href='index.php?component=resources&resources=article&action=modify&id=${i.id}' 
-                                    class="modify" name="modify_button" data-id="${i.id}">
-                                        <i class="fa-solid fa-pen-nib text-primary"></i></a>
                                 </td>` 
                             : ''}
                         </tr>`)
@@ -417,6 +408,7 @@ const modifyOrCreateResources = async (action, resourcesType, resourcesId) => {
         let result = ''
         let message = ''
         const form = document.querySelector('#resources-form')
+        
 
         if (!form.checkValidity()) {
             form.reportValidity()

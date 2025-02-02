@@ -41,6 +41,8 @@
                 }
             } 
 
+            $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
+
             if ($actionName === 'toggle_enabled') {
                 $id = cleanString($_GET['id']);
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -56,7 +58,8 @@
                 }
                 exit();
 
-            } else if ($actionName === 'create') {
+            } else if ($actionName === 'create' && $resourcesType === 'article') {
+                $resourcesType = isset($_GET['resources']) ? cleanString($_GET['resources']) : '';
                 $name = !empty($_POST['name']) ? cleanString($_POST['name']) : null;
                 $category = !empty($_POST['category']) ? cleanString($_POST['category']) : null;
                 $description = !empty($_POST['description']) ? cleanString($_POST['description']) : null;
@@ -84,15 +87,16 @@
                     exit();
                 }
 
-                $res = createResources($pdo, $name,$category,
-                 $description, $price, $stock, $enabled,  $finalName);
+                $res = createResources($pdo, $name, $category, 
+                $description, $price, $stock, $enabled,  $finalName);
 
                 if (is_string($res)){
                     echo json_encode(['error' => $res]);
                     exit();
                 }
 
-            } else if ($actionName === 'update') {
+            } else if ($actionName === 'update' && $resourcesType === 'article') {
+
                 $id = !empty($_GET['id']) ? cleanString($_GET['id']) : null;
                 $name = !empty($_POST['name']) ? cleanString($_POST['name']) : null;
                 $category = !empty($_POST['category']) ? cleanString($_POST['category']) : null;
@@ -100,7 +104,7 @@
                 $price = !empty($_POST['price']) ? cleanString($_POST['price']) : false;
                 $stock = !empty($_POST['stock']) ? cleanString($_POST['stock']) : false;
                 $enabled = !empty($_POST['enabled']) ? 1 : 0;
-        
+            
                 $finalName = null;
                 if(!empty($_FILES["image"]["name"])){
                     $tmpName = $_FILES["image"]['tmp_name'];
@@ -124,9 +128,11 @@
                 $description, $price, $stock, $enabled, $finalName);
 
                 if (is_string($res)){
-                    echo json_encode(['error' => $res]);
-                    exit();
+                     echo json_encode(['error' => $res]);
+                    exit();                    
                 }
+            } else {
+                return $errors = 'Les CRUD ne sont disponible que pour les articles.';
             }
 
         } catch (Exception $e) {

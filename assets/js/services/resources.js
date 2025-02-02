@@ -59,7 +59,6 @@ export const createResources = async (resourcesType, form) =>  {
         })
 
         return response.json()
-        exit; 
 
     } catch (error) {
         return { error: error.message };

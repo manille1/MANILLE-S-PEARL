@@ -7,7 +7,7 @@
 <?php } ?>
 
 
-<?php if($_SESSION['role'] === 1){ ?>
+<?php if($_SESSION['role'] === 1 && $_GET['resources']){ ?>
   <div class="d-grid gap-2 col-6 mx-auto">
     <button id="createBtn" class="btn btn-outline-success" type="button" name="create_button">Ajouter <i id="createIcon" class="fa-regular fa-square-plus"></i></button>
   </div>
@@ -85,13 +85,16 @@
 
       const createBtn = document.querySelector("#createBtn");
       const createIcon = document.querySelector("#createIcon");
-      createBtn.addEventListener("mouseenter", () => {
-          createIcon.classList.remove('fa-regular')
-          createIcon.classList.add('fa-solid')
-      });
-      createBtn.addEventListener("mouseleave", () => {
-          createIcon.classList.remove('fa-solid')
-          createIcon.classList.add('fa-regular')
-      });
+      if (createBtn) {
+        createBtn.addEventListener("mouseenter", () => {
+            createIcon.classList.remove('fa-regular')
+            createIcon.classList.add('fa-solid')
+        });
+        createBtn.addEventListener("mouseleave", () => {
+            createIcon.classList.remove('fa-solid')
+            createIcon.classList.add('fa-regular')
+        });
+      }
+      
     })
 </script>
