@@ -47,30 +47,41 @@ export const toggleEnabledResources = async (resourcesType, id, currentPage, sea
 
 export const createResources = async (resourcesType, form) =>  {
 
-    const data = new FormData(form)
+    try{
+        const data = new FormData(form)
 
-    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=create`, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        method: 'POST',
-        body: data
-    })
+        const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=create`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+            },
+            method: 'POST',
+            body: data
+        })
 
-    return response.json()
+        return response.json()
+        exit; 
+
+    } catch (error) {
+        return { error: error.message };
+    }
 }
 
 export const updateResources = async (resourcesType, form, id) =>  {
 
-    const data = new FormData(form)
+    try{
+        const data = new FormData(form)
 
-    const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=update&id=${id}&page=${currentPage}&search=${search}`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        method: 'POST',
-        body: data
-    })
+        const response = await fetch(`index.php?component=resources&resources=${resourcesType}&action=update&id=${id}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            method: 'POST',
+            body: data
+        })
+        
+        return response.json()
 
-    return response.json()
+    } catch (error) {
+        return { error: error.message };
+    }
 }

@@ -3,6 +3,7 @@
 
     //var_dump('debut controller');
     const LIST_ARTICLES_ITEMS_PER_PAGE = 15;
+    define('UPLOAD_DIRECTORY', '/Manille\'s_pearl/uploads/');
 
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
@@ -61,29 +62,71 @@
                 $description = !empty($_POST['description']) ? cleanString($_POST['description']) : null;
                 $price = !empty($_POST['price']) ? cleanString($_POST['price']) : false;
                 $stock = !empty($_POST['stock']) ? cleanString($_POST['stock']) : false;
-                $enabled = !empty($_POST['enabled']) ? cleanString($_POST['enabled']) : false;
+                $enabled = !empty($_POST['enabled']) ? 1 : 0;
+
+                $finalName = null;
+                if(!empty($_FILES["image"]["name"])){
+                    $tmpName = $_FILES["image"]['tmp_name'];
+                    $fileName = $_FILES["image"]["name"];
+                    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                    $uniqFilename = uniqid();
+                    $finalName = $uniqFilename . "." .$ext;
+
+                    move_uploaded_file($tmpName, $_SERVER["DOCUMENT_ROOT"] . UPLOAD_DIRECTORY . $finalName);
+                } else {
+                    echo json_encode(['error' => 'No resource image found']);
+                    exit();
+                }
         
         
-                if(empty($name) || empty($category) || empty($price) || empty($stock) || empty($enabled)) {
-                    //$updatedUser = createResources($pdo, $name,$category, $description, $price, $stock, $enabled);
-                    header('Content-Type: application/json');
+                if(empty($name) || empty($category) || empty($price) || empty($stock)) {
                     echo json_encode(['error' => 'No resource with given identifier found']);
                     exit();
                 }
 
-                $fileName = null;
+                $res = createResources($pdo, $name,$category,
+                 $description, $price, $stock, $enabled,  $finalName);
 
-                var_dump('files :',$_FILES);
-                if(!empty($_FILES['image']['name'])){
-
+                if (is_string($res)){
+                    echo json_encode(['error' => $res]);
+                    exit();
                 }
-                
-                
-                // if (!is_bool($updatedUser)) {
-                //         $errors[] = $updatedUser;
-                //     } else {
-                //         $user = getUser($pdo, $_GET['id']);
-                //     }
+
+            } else if ($actionName === 'update') {
+                $id = !empty($_GET['id']) ? cleanString($_GET['id']) : null;
+                $name = !empty($_POST['name']) ? cleanString($_POST['name']) : null;
+                $category = !empty($_POST['category']) ? cleanString($_POST['category']) : null;
+                $description = !empty($_POST['description']) ? cleanString($_POST['description']) : null;
+                $price = !empty($_POST['price']) ? cleanString($_POST['price']) : false;
+                $stock = !empty($_POST['stock']) ? cleanString($_POST['stock']) : false;
+                $enabled = !empty($_POST['enabled']) ? 1 : 0;
+        
+                $finalName = null;
+                if(!empty($_FILES["image"]["name"])){
+                    $tmpName = $_FILES["image"]['tmp_name'];
+                    $fileName = $_FILES["image"]["name"];
+                    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                    $uniqFilename = uniqid();
+                    $finalName = $uniqFilename . "." .$ext;
+
+                    move_uploaded_file($tmpName, $_SERVER["DOCUMENT_ROOT"] . UPLOAD_DIRECTORY . $finalName);
+                } else {
+                    echo json_encode(['error' => 'No resource image found']);
+                    exit();
+                }
+
+                if(empty($name) || empty($category) || empty($price) || empty($stock)) {
+                    echo json_encode(['error' => 'No resource with given identifier found, sorry']);
+                    exit();
+                }
+
+                $res = updateResources($pdo, $id, $name,$category, 
+                $description, $price, $stock, $enabled, $finalName);
+
+                if (is_string($res)){
+                    echo json_encode(['error' => $res]);
+                    exit();
+                }
             }
 
         } catch (Exception $e) {

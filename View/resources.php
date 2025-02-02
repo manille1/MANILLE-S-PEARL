@@ -81,7 +81,7 @@
         await refreshList(resourcesType, currentPage, search, actualUser, right)
         
       })
-
+      
 
       const createBtn = document.querySelector("#createBtn");
       const createIcon = document.querySelector("#createIcon");

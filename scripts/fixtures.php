@@ -23,7 +23,6 @@
         } else if($i === 4){
             $prep->bindValue(':name', 'Boucles d\'oreilles');
         }
-
         
         try {
             $prep->execute();
@@ -35,13 +34,15 @@
     }
 
     for($i = 0; $i<60; $i++){
+        $imageName = "fond_soie";
+
         $prep = $pdo->prepare('INSERT INTO article (name, category, description, image_name, price, stock, enabled) 
                             VALUES (:name, :category, :description, :image_name, :price, :stock, :enabled)');
 
         $prep->bindValue(':name', $faker->word());
         $prep->bindValue(':category', $faker->numberBetween(1, 4));
         $prep->bindValue(':description', $faker->sentences(5,true));
-        $prep->bindValue(':image_name', $faker->word());
+        $prep->bindValue(':image_name', $imageName);
         $prep->bindValue(':price', $faker->numberBetween(25, 500));
         $prep->bindValue(':stock', $faker->numberBetween(0, 200));
         $prep->bindValue(':enabled', $faker->numberBetween(0, 1), PDO::PARAM_INT);

@@ -11,7 +11,7 @@ export const refreshList = async (page) => {
         const categoryName = getCategoryName(data.results[i].category)
 
         listContent.push(`<div class="card">
-                            <img src="./IMG/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
+                            <img src="./uploads/${data.results[i].image_name}.jpg" alt="${data.results[i].image_name}">
                             <div class="text">
                                 <p class="small">${categoryName}</p>
                                 <a href="#"><h2>${data.results[i].name}</h2></a>

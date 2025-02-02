@@ -18,7 +18,7 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url(../../IMG/fond_soie.jpg) no-repeat center center;
+    background: url(../../uploads/fond_soie.jpg) no-repeat center center;
     background-size: cover;
     background-attachment: fixed;
     width: 100%;

@@ -5,7 +5,7 @@ import { getCategoryName } from "./shared/getCategoryName.js";
 export const refreshList = async (resourcesType, page, search, actualUser, right) => {
     const tbodyElement = document.querySelector('tbody')
     const data = await getResources(resourcesType, page, search)
-    //console.log('data :', data);
+    console.log('data :', data);
 
     let listContent = []
     
@@ -51,14 +51,10 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
                 } else {
                     const resourceId = modifyLink.getAttribute('data-id')
                     await getResourceFormModal('modify', resourcesType, resourceId)
+                    
+                    await modifyOrCreateResources('modify', resourcesType, resourceId)
                 }
-
-                const modifyBtn = document.querySelector('#saveBtn')
-                modifyBtn.addEventListener('click', async () => {
-                    //récupérer les données et les passer
-                    //envoyer la requête insérer l'élément dans la BDD
-                    //await updateResources(resourcesType, form, id)
-                })
+            
             })
         })
 
@@ -66,23 +62,7 @@ export const refreshList = async (resourcesType, page, search, actualUser, right
         createBtn.addEventListener('click', async () => {
             await getResourceFormModal('create', resourcesType)
 
-            const saveBtn = document.querySelector('#saveBtn')
-            saveBtn.addEventListener('click', async () => {
-                //récupérer les données et les passer
-                if (!form.checkValidity()) {
-                    form.reportValidity()
-                    return false
-                }
-
-                if (result.hasOwnProperty('success')) {
-                    showToast(message, 'bg-success')
-                    (e.target.name === 'create_button') ? form.reset() :null
-                } else if(result.hasOwnProperty('error')) {
-                    showToast(`Une erreur a été rencontrée: ${result.error}`, 'bg-danger')
-                }
-                //envoyer la requête insérer l'élément dans la BDD
-                //await createResources(resourcesType, form)
-            })
+                await modifyOrCreateResources('create', resourcesType, '0')
         })
     }
 }
@@ -99,7 +79,7 @@ const getResourcesModal = async (resourcesType, articleId) => {
         modalElement.querySelector('.modal-title').innerHTML = data.results[0].name
 
         modalElement.querySelector('.modal-body').innerHTML = `
-                        <img src="./IMG/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
+                        <img src="./uploads/${data.results[0].image_name}.jpg" alt="${data.results[0].image_name}">
                         <div class="text">
                             <p class="small">${categoryName}</p>
                             <h2>${data.results[0].name}</h2>
@@ -137,14 +117,14 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
         
         if (resourcesType === 'article') {
             modalElement.querySelector('.modal-body').innerHTML = `
-                            <form method="post" id="person-form" enctype="multiport/form-data">
+                            <form method="post" id="resources-form" enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom</label>
-                                    <input type="text" class="form-control" id="name" required>
+                                    <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Photo d'article</label>
-                                    <input class="form-control" type="file" id="image">
+                                    <input class="form-control" type="file" id="image" name="image" required>
                                 </div>
                                 <!-- img existe que si il y a id dans url donc que qd modif -->
                                 <div class="mb-3 d-flex align-items-end" id="resources-image"> 
@@ -153,30 +133,56 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
                                 </div>
                                 <div class="mb-3">
                                     <label for="category" class="form-label">Category</label>
-                                    <input type="int" class="form-control" id="category" required>
+                                    <input type="int" class="form-control" id="category" name="category" required>
                                     <div id="emailHelp" class="form-text"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description de l'article</label>
-                                    <input type="textarea" class="form-control" id="description">
+                                    <input type="textarea" class="form-control" id="description" name="description">
                                 </div>
                                 <div class="row g-3">
                                     <div class="col">
                                         <label for="prix" class="form-label">Prix en €</label>
-                                        <input type="text" class="form-control" id="prix" required>
+                                        <input type="text" class="form-control" id="prix" name="price" required>
                                     </div>
                                     <div class="col">
                                         <label for="stock" class="form-label">Stock</label>
-                                        <input type="text" class="form-control" id="stock">
+                                        <input type="text" class="form-control" id="stock" name="stock">
                                     </div>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="enabled">
+                                    <input type="checkbox" class="form-check-input" id="enabled" name="enabled">
                                     <label class="form-check-label" for="enabled">Disponible</label>
                                 </div>
                             </form>`
-            modalElement.querySelector('.modal-footer').innerHTML = `<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                                <button id="saveBtn" type="submit" class="btn btn-primary">Enregistrer</button>`
+            modalElement.querySelector('.modal-footer').innerHTML = `<button id="close-btn" type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                                        <button id="saveBtn" type="submit" class="btn btn-primary">Enregistrer</button>`
+            
+            if (resourcesType === 'article') {
+                const imgInput = document.querySelector('#image')
+                const imgPreview = document.querySelector('.img-thumbnail')
+                const xmarkImg = document.querySelector('.x-mark')
+                
+                imgInput.addEventListener('change', () => {
+                    if (imgInput.files.length > 0) {
+                        // imgPreview.src = `${imgInput.value}`
+                        imgPreview.classList.remove('d-none')
+                        xmarkImg.classList.remove('d-none')
+
+                    } else {
+                        imgPreview.setAttribute('class', 'img-thumbnail d-none')
+                        xmarkImg.setAttribute('class', 'x-mark d-none')
+                        
+                    }
+                })
+
+                xmarkImg.addEventListener('click', () => {
+                    imgInput.value = ''
+                    imgPreview.src = ''
+                    imgPreview.setAttribute('class', 'img-thumbnail d-none')
+                    xmarkImg.setAttribute('class', 'x-mark d-none')
+                })
+            }
     
         } else if (resourcesType === 'category') {
             modalElement.querySelector('.modal-body').innerHTML = `
@@ -223,29 +229,13 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
             document.getElementById("name").value = data.results[0].name
             
             //METTRE UNE IMAGE
-
-            const imgInput = document.querySelector('#image')
             const imgPreview = document.querySelector('.img-thumbnail')
-            const xmarkImg = document.querySelector('.x-mark')
-            // document.getElementById('remove-image-btn').setAttribute('data-id', data.results[0].id)
-            imgPreview.src = `./IMG/${data.results[0].image_name}.jpg`
+            imgPreview.src = `./uploads/${data.results[0].image_name}.jpg`
 
-            imgInput.addEventListener('change', () => {
-                if (imgInput.files.length > 0) {   //Modifie les id pour annulé la classe d-none en css si une image est présente
-                    imgPreview.classList.remove('d-none')
-                    xmarkImg.classList.remove('d-none')
-                } else {
-                    imgPreview.setAttribute('class', 'img-thumbnail d-none')
-                    xmarkImg.setAttribute('class', 'x-mark d-none')
-                }
-            })
-
-            xmarkImg.addEventListener('click', () => { //enlever l'img
-                //vider l'input
-                imgPreview.src = ``
-                imgPreview.setAttribute('class', 'img-thumbnail d-none')
-                xmarkImg.setAttribute('class', 'x-mark d-none')
-            })
+            if (imgPreview.src.length > 0) {
+                imgPreview.classList.remove('d-none')
+                document.querySelector('.x-mark').classList.remove('d-none')
+            }
 
             document.getElementById('category').value = data.results[0].category
             document.getElementById('description').value = data.results[0].description
@@ -273,7 +263,9 @@ const getResourceFormModal = async (action, resourcesType, articleId) => {
             document.getElementById("enabled").checked = data.results[0].enabled === 1 ? true : false
 
         }
+
     }
+        
 }
 
 const getPagination = (total) => {
@@ -418,38 +410,34 @@ const handleEnabledClick = async (resourcesType, currentPage, search) => {
     })
 }
 
-const modifyResources = async (resourcesType, resourcesId) => {
-    
+const modifyOrCreateResources = async (action, resourcesType, resourcesId) => {
+    const saveBtn = document.querySelector('#saveBtn')
+
+    saveBtn.addEventListener('click', async(e) => {
+        let result = ''
+        let message = ''
+        const form = document.querySelector('#resources-form')
+
+        if (!form.checkValidity()) {
+            form.reportValidity()
+            return false
+        }
+
+        if (action === 'create') {
+            result = await createResources(resourcesType, form)
+            message = 'La céation a été efféctuée avec succès'
+        } else if(action === 'modify') {
+            result = await updateResources(resourcesType, form, resourcesId)
+            message = 'La modification a été efféctuée avec succès'
+        }
+
+
+        if (result.hasOwnProperty('success')) {
+            showToast(message, 'bg-success')
+            (e.target.name  === 'saveBtn') ? form.reset() :null
+
+        } else if(result.hasOwnProperty('error')) {
+            showToast(`Une erreur a été rencontrée: ${result.error}`, 'bg-danger')
+        }
+    })
 }
-
-const createNewResources = async (resourcesType) => {
-
-}
-
-// export const handlePersonForm = () => {
-//     const saveBtn = document.querySelector('#saveBtn')
-
-//     saveBtn.addEventListener('click', async(e) => {
-//         const form = document.querySelector('form')
-
-//         if (!form.checkValidity()) {
-//             form.reportValidity()
-//             return false
-//         }
-
-//         if (e.target.name === 'create_button') {
-//             result = await createPerson(form)
-//             message = 'La personne a été créé avec succès'
-//         } else {
-//             result = await updatePerson(form, e.target.getAttribute('data-id'))
-//             message = 'La personne a été modifié avec succès'
-//         }
-
-//         if (result.hasOwnProperty('success')) {
-//             showToast(message, 'bg-success')
-//             (e.target.name === 'create_button') ? form.reset() :null
-//         } else if(result.hasOwnProperty('error')) {
-//             showToast(`Une erreur a été rencontrée: ${result.error}`, 'bg-danger')
-//         }
-//     })
-// }
