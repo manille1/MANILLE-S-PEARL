@@ -125,3 +125,10 @@ p{
 .modal .info p:first-child:hover{
     transform: scale(1.08);
 }
+
+#cart-title{
+    font-size: 5em;
+    font-family: Limelight;
+    text-align: start;
+    margin: 1em 40px;
+}
