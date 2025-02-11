@@ -45,7 +45,7 @@
         $prep->bindValue(':image_name', $imageName);
         $prep->bindValue(':price', $faker->numberBetween(25, 500));
         $prep->bindValue(':stock', $faker->numberBetween(0, 200));
-        $prep->bindValue(':enabled',  1);
+        $prep->bindValue(':enabled',  $faker->numberBetween(0, 1));
 
         try {
             $prep->execute();
